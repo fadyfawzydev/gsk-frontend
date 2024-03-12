@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(https://db.onlinewebfonts.com/c/e4ad0e6cdc6519a4b0bb6048a5f6db41?family=LizaDisplayPro);
+
+.mainBg {
+  background-image: url("/bgs/main.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.secBg {
+  background-image: url("/bgs/sec.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.treasureBg {
+  background-image: url("/bgs/treasure.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.mapBg {
+  background-image: url("/bgs/map.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.wheelBg {
+  background-image: url("/bgs/wheel.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.treasureQuestionBg {
+  background-image: url("/bgs/treasureQuestion.webp");
+  @apply bg-cover bg-no-repeat;
+}
+
+@font-face {
+  font-family: "Metropolis";
+  src: url("../fonts/Metropolis-Black.otf");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liza Display Pro";
+  src: url("../fonts/Liza\ Display\ Pro.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-liza {
+  font-family: "Liza Display Pro";
+}
