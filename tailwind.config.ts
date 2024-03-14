@@ -16,6 +16,9 @@ const config: Config = {
       screens: {
         "3xl": "1920px",
       },
+      boxShadow: {
+        'custom': '2px 1px 4px rgba(105, 139, 175, 0.50)',
+      }
     },
   },
   plugins: [],

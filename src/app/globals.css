@@ -11,6 +11,10 @@
   background-image: url("/bgs/sec.webp");
   @apply bg-cover bg-no-repeat;
 }
+.knowledgeWinnersBg {
+  background-image: url("/bgs/knowledge_winners.webp");
+  @apply bg-cover bg-no-repeat;
+}
 .treasureBg {
   background-image: url("/bgs/treasure.webp");
   @apply bg-cover bg-no-repeat;
