@@ -3,27 +3,30 @@ import React from "react";
 
 interface QuestionHeaderProps {
   question: string;
+  gameSlug?: string;
 }
-const QuestionHeader = ({ question }: QuestionHeaderProps) => {
+const QuestionHeader = ({ question, gameSlug }: QuestionHeaderProps) => {
   return (
-    <div className="relative w-[46.35vw] h-auto">
-      <Image
-        src={"/shapes/qustionBlob.svg"}
-        width={890}
-        height={579}
-        className="h-auto w-full object-contain"
-        alt=""
-      />
-      <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-[70%] w-full">
-        <div className="text-center">
+    <div className="relative min-w-[46.35vw] max-w-[75vw] h-auto min-h-[40vh] max-h-[50vh]">
+      <div className="absolute -top-[15vh] left-1/2 transform -translate-x-1/2  z-10 ">
+        <div className="w-[21.45vw]">
+          <Image
+            src={`/logos/${gameSlug}.webp`}
+            height={324}
+            width={600}
+            className="h-auto w-full object-contain"
+            alt={gameSlug || "game logo"}
+          />
+        </div>
+      </div>
+      <div className="absolute -top-[5vh] left-[51%] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 transform -translate-x-[51%] z-[1] h-[17.87vh] w-[10.05vw] rounded-full"></div>
+      <div className="z-[2] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full">
+        <h5 className="text-white text-[2.71vw] font-bold flex flex-col items-center gap-y-[0.75vh] px-[3vw] py-[2.5vh] text-ellipsis">
           <span className="text-white text-[2.71vw] font-normal">
             How question?
           </span>
-          <br />
-          <span className="text-white text-[2.71vw] font-bold ">
-            {question}
-          </span>
-        </div>
+          <span className="font-bold">{question}</span>
+        </h5>
       </div>
     </div>
   );

@@ -1,67 +1,33 @@
-"use client";
-import React, { useState } from "react";
-import QuestionHeader from "../_components/questions/QuestionHeader";
-import QuestionBody from "../_components/questions/QuestionBody";
-import { questionBank } from "../_mocks/mockData";
+import React from "react";
+
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-export default function QuestionsPage() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
-  const router = useRouter();
-  const isLastQuestion = currentQuestionIndex === questionBank.length - 1;
-
-  const handleNextQuestion = () => {
-    if (isLastQuestion) {
-      // Here you can handle showing the results
-      router.push("/leaderboard");
-    } else {
-      // Move to the next question
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowCorrectAnswer(false);
-    }
-  };
-
-  const handleAnswerClick = (correct: boolean) => {
-    setShowCorrectAnswer(true);
-  };
-
+import Questions from "../_components/clientComponents/Questions";
+interface QuestionsPageProps {
+  gameSlug?: string;
+}
+export default function QuestionsPage({
+  gameSlug = "treasure_hunt",
+}: QuestionsPageProps) {
   return (
     <div className="secBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
-        <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
-          <QuestionHeader
-            question={questionBank[currentQuestionIndex].question}
+        <div className="flex flex-col w-full top-[2.96vh] gap-[1.5vh] justify-between items-end h-[5.93vh] absolute right-[1.54vw] ">
+          <Image
+            src={"/logos/kepra_white.webp"}
+            height={64}
+            width={143}
+            className="h-full w-auto object-contain"
+            alt="kepra"
           />
-          <QuestionBody
-            answers={questionBank[currentQuestionIndex].answers}
-            showCorrectAnswer={showCorrectAnswer}
-            onAnswerClick={handleAnswerClick}
+          <Image
+            src={"/logos/gsk_white.webp"}
+            height={43}
+            width={143}
+            className="h-full w-auto object-contain"
+            alt="Gsk"
           />
-          <button
-            className="w-[22.55vw] h-[12.04vh] absolute bottom-10 right-10"
-            onClick={
-              showCorrectAnswer
-                ? handleNextQuestion
-                : () => setShowCorrectAnswer(true)
-            }
-          >
-            <Image
-              src={`/shapes/${
-                showCorrectAnswer
-                  ? isLastQuestion
-                    ? "leaderboard.svg"
-                    : "nextQuestion.svg"
-                  : "answerNow.svg"
-              }`}
-              width={890}
-              height={579}
-              className="h-auto w-full object-contain"
-              alt=""
-            />
-          </button>
         </div>
+        <Questions gameSlug={gameSlug} />
       </div>
     </div>
   );

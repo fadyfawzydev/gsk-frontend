@@ -20,6 +20,22 @@ const Leaderboard = () => {
     <div className="knowledgeWinnersBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
         <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
+          <div className="flex w-full top-[2.96vh] justify-between items-center h-[5.93vh] absolute ">
+            <Image
+              src={"/logos/kepra.webp"}
+              height={64}
+              width={143}
+              className="h-full w-auto object-contain"
+              alt="kepra"
+            />
+            <Image
+              src={"/logos/gsk.webp"}
+              height={43}
+              width={143}
+              className="h-full w-auto object-contain"
+              alt="Gsk"
+            />
+          </div>
           <div className="relative w-[46.35vw] h-auto">
             <div className="flex flex-col w-full gap-y-[3.15vh]">
               <div className="flex w-full">
@@ -61,31 +77,33 @@ const Leaderboard = () => {
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-2 w-full gap-y-[3.15vh] gap-x-[1.67vw]">
-                {others.map((student, index) => (
-                  <div
-                    key={student.id}
-                    className="h-[8.68vh] relative bg-white shadow-custom rounded-[0.75vw]"
-                  >
-                    <div className="flex justify-between items-center gap-[1.25vw] h-full px-[1.25vw]">
-                      <div className="flex gap-[1.25vw] justify-between items-center">
-                        <div className="text-sky-950 text-[1.7vw] font-normal">
-                          {index + 4}
-                        </div>
-                        <div className="w-[3.33vw]">
-                          <Avatar className="w-full" />
-                        </div>
-                        <div className="text-sky-950 text-[1.25vw] font-normal">
-                          {student.name}
-                        </div>
+            </div>
+          </div>
+          <div className="relative w-[62.4vw] h-auto">
+            <div className="grid grid-cols-2 w-full gap-y-[3.15vh] gap-x-[1.67vw]">
+              {others.map((student, index) => (
+                <div
+                  key={student.id}
+                  className="h-[8.68vh] relative bg-white shadow-custom rounded-[0.75vw]"
+                >
+                  <div className="flex justify-between items-center gap-[1.25vw] h-full px-[1.25vw]">
+                    <div className="flex gap-[1.25vw] justify-between items-center">
+                      <div className="text-sky-950 text-[1.7vw] font-normal">
+                        {index + 4}
                       </div>
-                      <div className="text-amber-500 text-[1.35vw] font-bold">
-                        {student.score}
+                      <div className="w-[3.33vw]">
+                        <Avatar className="w-full" />
+                      </div>
+                      <div className="text-sky-950 text-[1.25vw] font-normal">
+                        {student.name}
                       </div>
                     </div>
+                    <div className="text-amber-500 text-[1.35vw] font-bold">
+                      {student.score}
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

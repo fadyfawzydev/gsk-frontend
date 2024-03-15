@@ -49,3 +49,21 @@
 .font-liza {
   font-family: "Liza Display Pro";
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out; /* Starts fast */
+  }
+  100% {
+    transform: rotate(var(--stop-rotation, 0deg)); /* Dynamic stopping point */
+    animation-timing-function: ease-in; /* Slows down */
+  }
+}
+
+/* Add this class to the wheelRollute image when spinning */
+.wheel-spinning {
+  animation: spin 5s linear;
+  transform-origin: center; /* Center the rotation */
+  animation-fill-mode: forwards;
+}

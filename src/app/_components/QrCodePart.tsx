@@ -5,12 +5,13 @@ import Image from "next/image";
 import QRCode from "react-qr-code";
 interface QrCodePartProps {
   code: string;
+  fgColor?: string;
 }
-const QrCodePart = ({ code }: QrCodePartProps) => {
+const QrCodePart = ({ code, fgColor = "#000" }: QrCodePartProps) => {
   return (
     <div className="w-[34.38vw] shrink-0 h-screen">
       <div className="flex flex-col h-full w-full relative justify-between">
-        <div className="w-full rounded-bl-[1.67vw] rounded-br-[1.67vw] shadow-inner backdrop-blur-[47px] bg-white/60 flex flex-col justify-center items-center gap-10 relative !mx-0 h-[74%] ">
+        <div className="w-full rounded-bl-[1.67vw] rounded-br-[1.67vw] shadow-inner backdrop-blur-[26px] bg-white/60 flex flex-col justify-center items-center gap-10 relative !mx-0 h-[74%] ">
           <Image
             src={"/logos/scan_to_play.webp"}
             height={37}
@@ -24,7 +25,7 @@ const QrCodePart = ({ code }: QrCodePartProps) => {
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
               value={code}
               bgColor={"transparent"}
-              fgColor={"#000"}
+              fgColor={fgColor}
               viewBox={`0 0 256 256`}
             />
           </div>
