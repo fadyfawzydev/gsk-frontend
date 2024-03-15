@@ -27,6 +27,10 @@
   background-image: url("/bgs/wheel.webp");
   @apply bg-cover bg-no-repeat;
 }
+.loginBg {
+  background-image: url("/bgs/loginBg.webp");
+  @apply bg-cover bg-no-repeat;
+}
 .treasureQuestionBg {
   background-image: url("/bgs/treasureQuestion.webp");
   @apply bg-cover bg-no-repeat;
