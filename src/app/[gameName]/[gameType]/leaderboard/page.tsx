@@ -28,11 +28,10 @@ const Leaderboard = () => {
       const response = await adminWinnersList(authToken);
       console.log("response", response);
       setWinners(response.data);
-      console.log("winners", winners);
     } catch (error) {
       console.error("Error fetching next question:", error);
     }
-  }, [gameInfo?._token, winners]);
+  }, [gameInfo?._token]);
 
   useEffect(() => {
     checkTokenAndRedirect();

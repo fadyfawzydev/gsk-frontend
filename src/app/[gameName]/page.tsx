@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useMyContext } from "../_components/providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import { adminStartPlay } from "../_services/api";
@@ -14,10 +14,15 @@ export default function LoginPage({
   const { gameInfo, updateGameInfo } = useMyContext();
   const router = useRouter();
 
+  // State for managing error popup visibility and message
+  const [isErrorPopupVisible, setIsErrorPopupVisible] = useState(false);
+  const [errorPopupMessage, setErrorPopupMessage] = useState("");
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    setIsErrorPopupVisible(false); // Hide the popup at the start of a new login attempt
+
     try {
-      // Assuming you have the username and password inputs, get their values
       const usernameInput = document.getElementById(
         "username"
       ) as HTMLInputElement;
@@ -29,67 +34,91 @@ export default function LoginPage({
       const username = usernameInput.value;
       const password = passwordInput.value;
 
-      // Call the Admin Start Play API
       const startPlayResponse = await adminStartPlay(
         username,
         password,
         gameName || "",
         ""
       );
-      // Update session token and game type in context
       const { data } = startPlayResponse;
       updateGameInfo(data);
-
-      // Redirect to the appropriate page
       router.push(`/${gameName}/${data.game_type_slug}`);
+      const errorMessage = startPlayResponse.status
+        ? ""
+        : startPlayResponse.msg;
+      console.log(startPlayResponse);
+
+      setErrorPopupMessage(errorMessage);
     } catch (error) {
       console.error("Error logging in:", error);
-      // Handle login error
+      // Extract error message from the API response if available
+      setIsErrorPopupVisible(true);
     }
   };
 
   return (
     <div className="loginBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
-        <div className="flex h-screen w-full flex-col justify-center items-start gap-y-[3.15vh] relative">
-          <div className="relative min-w-[46.35vw] h-auto min-h-[35vh]">
-            <div className="absolute -top-[15vh] left-1/2 transform -translate-x-1/2  z-10 ">
-              <div className="w-[21.45vw]">
+      <div className="h-screen relative">
+        {/* Error Popup */}
+        {isErrorPopupVisible && (
+          <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 text-[1.23vw] bg-white p-4 rounded shadow-lg z-50">
+            <p>{errorPopupMessage}</p>
+            <button onClick={() => setIsErrorPopupVisible(false)}>Close</button>
+          </div>
+        )}
+        <div className="flex h-screen w-full flex-col justify-center items-center relative">
+          <div className="flex w-full h-full justify-center items-center gap-x-[6.25vw] ">
+            <div className="flex gap-y-[6vh] flex-col justify-center items-center">
+              <div className="w-[15.6vw]">
                 <Image
-                  src={`/logos/gsk_white.webp`}
+                  src={`/logos/gsk.webp`}
                   height={324}
                   width={600}
                   className="h-auto w-full object-contain"
                   alt={"game logo"}
                 />
               </div>
+              <div className="text-[1.14vw] w-[90%]  font-semibold text-center">
+                We have policies in place across GSK to ensure we meet the high
+                standards we set ourselves as a company, and those that are
+                expected of us externally.
+              </div>
             </div>
-            <div className="absolute -top-[5vh] left-[51%] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 transform -translate-x-[51%] z-[1] h-[17.87vh] w-[10.05vw] rounded-full"></div>
-            <div className="z-[2] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full">
+            <div className="relative w-[31.25vw] h-[92vh] bg-white flex justify-center flex-col items-center rounded-[1.25vw]">
               <form
-                className="text-center flex flex-col items-center gap-y-[2.5vh] w-full"
+                className="text-center flex flex-col items-center gap-y-[2.5vh] mx-[5.20vw]"
                 onSubmit={handleLogin}
               >
-                <input
-                  type="text"
-                  id="username"
-                  className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
-                  placeholder="Please enter your username"
-                />
-                <input
-                  type="password"
-                  id="password"
-                  className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
-                  placeholder="Please enter your password"
-                />
-                <button type="submit">
-                  <Image
-                    src={"/shapes/login.webp"}
-                    width={433}
-                    height={579}
-                    className="h-[8vh] w-full object-contain"
-                    alt=""
+                <h6 className="font-bold text-[1.14vw]">Login</h6>
+                <div className="flex flex-col w-full justify-center gap-[2vh]">
+                  <label htmlFor="username" className="w-full text-left">
+                    Username <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    required
+                    className="h-[4vh] relative bg-white rounded-[0.32vw] outline-none text-[1vw] placeholder:text-[1vw] px-[1.67vw] border border-[#DBDFE9]"
+                    placeholder="Please enter your username"
                   />
+                </div>
+                <div className="flex flex-col w-full justify-center gap-[2vh]">
+                  <label htmlFor="password" className="w-full text-left">
+                    Password <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    required
+                    className="h-[4vh] relative bg-white rounded-[0.32vw] outline-none text-[1vw] placeholder:text-[1vw] px-[1.67vw] border border-[#DBDFE9]"
+                    placeholder="Please enter your password"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full h-[4.2vh] text-[1vw] relative rounded-[6.18px] bg-[#e86824] text-white mt-[4vh]"
+                >
+                  Login
                 </button>
               </form>
             </div>
