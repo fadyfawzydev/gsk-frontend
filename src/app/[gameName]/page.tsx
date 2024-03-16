@@ -1,9 +1,25 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useMyContext } from "../_components/providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import { adminStartPlay } from "../_services/api";
+import Image from "next/image";
+
+interface ToasterProps {
+  message: string;
+  visible: boolean;
+}
+const Toaster: React.FC<ToasterProps> = ({ message, visible }) => {
+  return (
+    <div
+      className={`${
+        visible ? "block" : "hidden"
+      } fixed bottom-[10vh] w-[20vw] text-white left-1/2 transform -translate-x-1/2 bg-red-500/80 text-center text-[1vw] p-4 rounded shadow-lg z-50`}
+    >
+      <p>{message}</p>
+    </div>
+  );
+};
 
 export default function LoginPage({
   params,
@@ -11,27 +27,33 @@ export default function LoginPage({
   params: { gameName?: string };
 }) {
   const { gameName } = params;
-  const { gameInfo, updateGameInfo } = useMyContext();
+  const { updateGameInfo } = useMyContext();
   const router = useRouter();
 
-  // State for managing error popup visibility and message
   const [isErrorPopupVisible, setIsErrorPopupVisible] = useState(false);
-  const [errorPopupMessage, setErrorPopupMessage] = useState("");
+
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [isToasterVisible, setIsToasterVisible] = useState(false);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (isErrorPopupVisible) {
-      // Set a timeout to hide the popup after 5 seconds
       timeoutId = setTimeout(() => {
         setIsErrorPopupVisible(false);
-      }, 5000);
+      }, 1000);
     }
-    return () => clearTimeout(timeoutId); // Cleanup timeout on component unmount
-  }, [isErrorPopupVisible]);
+    if (isToasterVisible) {
+      timeoutId = setTimeout(() => {
+        setIsToasterVisible(false);
+      }, 1000);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [isErrorPopupVisible, isToasterVisible]);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    setIsErrorPopupVisible(false); // Hide the popup at the start of a new login attempt
+    setIsErrorPopupVisible(false);
+    setIsToasterVisible(false);
 
     try {
       const usernameInput = document.getElementById(
@@ -52,32 +74,24 @@ export default function LoginPage({
         ""
       );
       const { data } = startPlayResponse;
-      console.log(startPlayResponse);
-      console.log(startPlayResponse.status);
       const errorMessage = startPlayResponse.status
         ? ""
         : startPlayResponse.msg;
-      console.log(startPlayResponse);
 
-      setErrorPopupMessage(errorMessage);
+      setToasterMessage(errorMessage);
+
       updateGameInfo(data);
       router.push(`/${gameName}/${data.game_type_slug}`);
     } catch (error) {
       console.error("Error logging in:", error);
-      // Extract error message from the API response if available
-      setIsErrorPopupVisible(true);
+      setIsToasterVisible(true);
     }
   };
 
   return (
     <div className="loginBg w-full h-screen overflow-hidden">
       <div className="h-screen relative">
-        {/* Error Popup */}
-        {isErrorPopupVisible && (
-          <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 text-[1.23vw] bg-white p-4 rounded shadow-lg z-50">
-            <p>{errorPopupMessage}</p>
-          </div>
-        )}
+        <Toaster message={toasterMessage} visible={isToasterVisible} />
         <div className="flex h-screen w-full flex-col justify-center items-center relative">
           <div className="flex w-full h-full justify-center items-center gap-x-[6.25vw] ">
             <div className="flex gap-y-[6vh] flex-col justify-center items-center">
