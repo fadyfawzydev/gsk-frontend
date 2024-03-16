@@ -30,29 +30,22 @@ export default function LoginPage({
   const { updateGameInfo } = useMyContext();
   const router = useRouter();
 
-  const [isErrorPopupVisible, setIsErrorPopupVisible] = useState(false);
 
   const [toasterMessage, setToasterMessage] = useState("");
   const [isToasterVisible, setIsToasterVisible] = useState(false);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    if (isErrorPopupVisible) {
-      timeoutId = setTimeout(() => {
-        setIsErrorPopupVisible(false);
-      }, 1000);
-    }
     if (isToasterVisible) {
       timeoutId = setTimeout(() => {
         setIsToasterVisible(false);
-      }, 1000);
+      }, 4000);
     }
     return () => clearTimeout(timeoutId);
-  }, [isErrorPopupVisible, isToasterVisible]);
+  }, [ isToasterVisible]);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    setIsErrorPopupVisible(false);
     setIsToasterVisible(false);
 
     try {
