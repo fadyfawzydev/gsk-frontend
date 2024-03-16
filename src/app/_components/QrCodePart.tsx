@@ -99,8 +99,8 @@ const QrCodePart = ({
             </span>
           </button>
         </div>
-        <div className="relative w-full h-[25%] flex flex-col items-center justify-end ">
-          <div className="absolute right-[1.04vw] top-0 z-10 h-[9.45vh]">
+        <div className="relative w-full flex flex-col items-center justify-end ">
+          <div className="absolute right-[1.04vw] -top-[8vh] z-10 h-[9.45vh]">
             <ArrowLine
               className={`w-full h-full ${
                 gameType === KNOWLEDGE_HUB ? "text-[#7D20A8]" : "text-[#FFFF08]"
