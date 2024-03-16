@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMyContext } from "../_components/providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import { adminStartPlay } from "../_services/api";
@@ -17,6 +17,17 @@ export default function LoginPage({
   // State for managing error popup visibility and message
   const [isErrorPopupVisible, setIsErrorPopupVisible] = useState(false);
   const [errorPopupMessage, setErrorPopupMessage] = useState("");
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (isErrorPopupVisible) {
+      // Set a timeout to hide the popup after 5 seconds
+      timeoutId = setTimeout(() => {
+        setIsErrorPopupVisible(false);
+      }, 5000);
+    }
+    return () => clearTimeout(timeoutId); // Cleanup timeout on component unmount
+  }, [isErrorPopupVisible]);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -41,14 +52,16 @@ export default function LoginPage({
         ""
       );
       const { data } = startPlayResponse;
-      updateGameInfo(data);
-      router.push(`/${gameName}/${data.game_type_slug}`);
+      console.log(startPlayResponse);
+      console.log(startPlayResponse.status);
       const errorMessage = startPlayResponse.status
         ? ""
         : startPlayResponse.msg;
       console.log(startPlayResponse);
 
       setErrorPopupMessage(errorMessage);
+      updateGameInfo(data);
+      router.push(`/${gameName}/${data.game_type_slug}`);
     } catch (error) {
       console.error("Error logging in:", error);
       // Extract error message from the API response if available
@@ -63,7 +76,6 @@ export default function LoginPage({
         {isErrorPopupVisible && (
           <div className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 text-[1.23vw] bg-white p-4 rounded shadow-lg z-50">
             <p>{errorPopupMessage}</p>
-            <button onClick={() => setIsErrorPopupVisible(false)}>Close</button>
           </div>
         )}
         <div className="flex h-screen w-full flex-col justify-center items-center relative">
