@@ -8,7 +8,6 @@ export default function KnowledgeHubHome() {
   const code: string = "485-439";
   const pathname = usePathname();
   const { gameInfo } = useMyContext();
-  console.log(gameInfo)
   return (
     <div className="mainBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">

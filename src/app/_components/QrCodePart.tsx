@@ -6,6 +6,7 @@ import { ScanToPlay } from "./svgs/ScanToPlay";
 import clsx from "clsx";
 import { KNOWLEDGE_HUB } from "../_constants/gameTypes";
 import { useRouter } from "next/navigation";
+import { useMyContext } from "./providers/ContextProvider";
 interface QrCodePartProps {
   code: string;
   fgColor?: string;
@@ -39,6 +40,9 @@ const QrCodePart = ({
       color: "#FFFF08",
     },
   };
+
+  const { gameInfo } = useMyContext();
+
   const { title, icon, color } =
     gameStyle[gameType as keyof typeof gameStyle] || {};
 
@@ -78,7 +82,7 @@ const QrCodePart = ({
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={code}
+              value={gameInfo?.game_url || ""}
               bgColor={"transparent"}
               fgColor={fgColor}
               viewBox={`0 0 256 256`}
@@ -109,7 +113,7 @@ const QrCodePart = ({
             <span
               className={`text-[${color}] text-[2.50vw] font-black font-['Metropolis']`}
             >
-              {code}
+              {gameInfo?.pin_code}
             </span>
           </div>
         </div>
