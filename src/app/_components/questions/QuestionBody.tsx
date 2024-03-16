@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { IAnswer } from "@/app/_types";
+import { useMyContext } from "../providers/ContextProvider";
 
 interface QuestionBodyProps {
   answers: IAnswer[];
@@ -17,14 +18,18 @@ const QuestionBody = ({
   showAnswer,
   onAnswerClick,
 }: QuestionBodyProps) => {
+  const { gameInfo } = useMyContext();
+
   return (
     <div className={className}>
       {answers.map((answer, index) => (
         <div
           key={index}
+          style={{ backgroundColor: `${gameInfo?.event_color}` }}
           className={clsx(
             "h-[10.37vh] p-[1.67vw] bg-amber-500 bg-opacity-60 rounded-[10.42vw] shadow-inner backdrop-blur-[4.35vw] justify-start items-center gap-[1.30vw] flex",
             {
+              "bg-amber-500": !gameInfo?.event_color,
               "!bg-[#A2B000]":
                 showAnswer && answer.answer_id === correctAnswerId,
               "!bg-[#F72900]":

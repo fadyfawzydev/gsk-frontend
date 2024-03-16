@@ -66,31 +66,32 @@ export default function LoginPage({
             </div>
             <div className="absolute -top-[5vh] left-[51%] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 transform -translate-x-[51%] z-[1] h-[17.87vh] w-[10.05vw] rounded-full"></div>
             <div className="z-[2] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full">
-              <div className="text-center flex flex-col items-center gap-y-[2.5vh] w-full">
-                <form onSubmit={handleLogin}>
-                  <input
-                    type="text"
-                    id="username"
-                    className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
-                    placeholder="Please enter your username"
+              <form
+                className="text-center flex flex-col items-center gap-y-[2.5vh] w-full"
+                onSubmit={handleLogin}
+              >
+                <input
+                  type="text"
+                  id="username"
+                  className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
+                  placeholder="Please enter your username"
+                />
+                <input
+                  type="password"
+                  id="password"
+                  className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
+                  placeholder="Please enter your password"
+                />
+                <button type="submit">
+                  <Image
+                    src={"/shapes/login.webp"}
+                    width={433}
+                    height={579}
+                    className="h-[8vh] w-full object-contain"
+                    alt=""
                   />
-                  <input
-                    type="password"
-                    id="password"
-                    className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
-                    placeholder="Please enter your password"
-                  />
-                  <button type="submit">
-                    <Image
-                      src={"/shapes/login.webp"}
-                      width={433}
-                      height={579}
-                      className="h-[8vh] w-full object-contain"
-                      alt=""
-                    />
-                  </button>
-                </form>
-              </div>
+                </button>
+              </form>
             </div>
           </div>
         </div>
