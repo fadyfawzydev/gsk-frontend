@@ -61,21 +61,40 @@ const Leaderboard = () => {
     topThreeWinners[0] = topThreeWinners[1];
     topThreeWinners[1] = tempWinner;
   }
+  const eventImgSrc = gameInfo?.event_logo;
 
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
         <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
-          <div className="flex w-full top-[2.96vh] justify-between items-center h-[5.93vh] absolute ">
+          <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 px-[1.563vw]  ">
+            {eventImgSrc ? (
+              <Image
+                src={eventImgSrc}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            ) : (
+              <Image
+                src={`${
+                  gameType === KNOWLEDGE_HUB
+                    ? "/logos/kepra.webp"
+                    : "/logos/kepra_white.webp"
+                }`}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            )}
             <Image
-              src={"/logos/kepra.webp"}
-              height={64}
-              width={143}
-              className="h-full w-auto object-contain"
-              alt="kepra"
-            />
-            <Image
-              src={"/logos/gsk.webp"}
+              src={`${
+                gameType === KNOWLEDGE_HUB
+                  ? "/logos/gsk.webp"
+                  : "/logos/gsk_white.webp"
+              }`}
               height={43}
               width={143}
               className="h-full w-auto object-contain"
@@ -91,11 +110,11 @@ const Leaderboard = () => {
                       key={index}
                       className={`${
                         index === 1
-                          ? "-ms-[0.52vw]"
+                          ? "-ms-[0.4vw] z-[20]"
                           : index === 0
-                          ? "secondPlace"
-                          : "-ms-[0.56vw]"
-                      } relative w-full`}
+                          ? "secondPlace z-[10]"
+                          : "-ms-[0.46vw] z-[5]"
+                      } relative w-full flex items-end`}
                     >
                       <Image
                         src={`/shapes/leaderboard/${

@@ -13,30 +13,38 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
   const router = useRouter();
+
   const { gameName, gameType } = useParams<{
     gameName: string;
     gameType: string;
   }>();
+  const searchParams = useSearchParams();
+  const getNext = searchParams.get("getNextQuestion");
+  console.log(!!getNext);
   const { checkTokenAndRedirect, gameInfo } = useMyContext();
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+  const [getNextQuestion, setGetNextQuestion] = useState(!!getNext);
   const [remainingNumber, setRemainingNumber] = useState(1);
   const [question, setQuestion] = useState<IQuestion>();
+  const eventImgSrc = gameInfo?.event_logo;
 
   const fetchNextQuestion = useCallback(async () => {
     if (remainingNumber === 0) return;
 
     try {
       const authToken = gameInfo?._token || "";
-      const response = await adminNextQuestion(authToken);
+      const response = await adminNextQuestion(authToken, getNextQuestion);
       setQuestion(response.data);
       setRemainingNumber(response.data.remaining_questions);
+      setGetNextQuestion(false);
     } catch (error) {
       console.error("Error fetching next question:", error);
     }
-  }, [remainingNumber, gameInfo]);
+  }, [remainingNumber, gameInfo?._token, getNextQuestion]);
 
   useEffect(() => {
     checkTokenAndRedirect();
@@ -58,6 +66,7 @@ const Page = () => {
       router.push(`/${gameName}/${gameType}/leaderboard`);
     } else {
       setShowCorrectAnswer(false);
+      setGetNextQuestion(true);
       fetchNextQuestion();
     }
   };
@@ -69,14 +78,28 @@ const Page = () => {
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
-        <div className="flex flex-col w-full top-[2.96vh] gap-[1.5vh] justify-between items-end h-[5.93vh] absolute right-[1.54vw] ">
-          <Image
-            src={"/logos/kepra_white.webp"}
-            height={64}
-            width={143}
-            className="h-full w-auto object-contain"
-            alt="kepra"
-          />
+        <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 px-[1.563vw]  ">
+          {eventImgSrc ? (
+            <Image
+              src={eventImgSrc}
+              height={400}
+              width={400}
+              className="h-full w-auto object-contain"
+              alt={"event logo"}
+            />
+          ) : (
+            <Image
+              src={`${
+                gameType === KNOWLEDGE_HUB
+                  ? "/logos/kepra.webp"
+                  : "/logos/kepra_white.webp"
+              }`}
+              height={400}
+              width={400}
+              className="h-full w-auto object-contain"
+              alt={"event logo"}
+            />
+          )}
           <Image
             src={"/logos/gsk_white.webp"}
             height={43}

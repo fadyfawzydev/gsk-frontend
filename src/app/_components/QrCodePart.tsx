@@ -94,7 +94,7 @@ const QrCodePart = ({
             }}
             className={startPlayingClass}
           >
-            <span className="text-center text-[1.97vw] font-semibold font-['Metropolis'] flex items-center gap-4">
+            <span className="text-center text-[1.97vw] font-semibold  flex items-center gap-4">
               <PuzzleIcon className="w-[1.97vw] h-auto" /> Start Playing Now
             </span>
           </button>

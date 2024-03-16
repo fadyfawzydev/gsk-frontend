@@ -1,6 +1,8 @@
 import Image from "next/image";
 import QrCodePart from "../../QrCodePart";
 import { useParams } from "next/navigation";
+import { useMyContext } from "../../providers/ContextProvider";
+import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 
 export default function TreasureHuntHome() {
   const code: string = "485-439";
@@ -8,6 +10,8 @@ export default function TreasureHuntHome() {
     gameName: string;
     gameType: string;
   }>();
+  const { gameInfo } = useMyContext();
+  const eventImgSrc = gameInfo?.event_logo;
 
   return (
     <div className="treasureBg w-full h-screen overflow-hidden">
@@ -21,17 +25,31 @@ export default function TreasureHuntHome() {
               className="h-full w-auto object-contain"
               alt="Gsk"
             />
-            <Image
-              src={"/logos/kepra_white.webp"}
-              height={64}
-              width={143}
-              className="h-full w-auto object-contain"
-              alt="kepra"
-            />
+            {eventImgSrc ? (
+              <Image
+                src={eventImgSrc}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            ) : (
+              <Image
+                src={`${
+                  gameType === KNOWLEDGE_HUB
+                    ? "/logos/kepra.webp"
+                    : "/logos/kepra_white.webp"
+                }`}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            )}
           </div>
           <div className="flex h-[50vh]">
             <Image
-              src={"/logos/treasure_hunt.webp"}
+              src={"/logos/treasure-hunt.webp"}
               height={540}
               width={850}
               className="h-full w-auto object-contain"

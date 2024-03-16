@@ -39,9 +39,14 @@ export async function adminStartPlay(
 }
 
 // Admin Next Question endpoint function
-export async function adminNextQuestion(authToken: string): Promise<any> {
+export async function adminNextQuestion(
+  authToken: string,
+  getNextQuestion: boolean
+): Promise<any> {
   const url = `${BASE_URL}/Admin/NextQuestion`;
-  return postData(url, new FormData(), authToken);
+  const formData = new FormData();
+  formData.append("get_next_question", getNextQuestion ? "true" : "false");
+  return postData(url, formData, authToken);
 }
 
 // Admin Winners List endpoint function

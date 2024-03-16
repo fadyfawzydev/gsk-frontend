@@ -8,6 +8,8 @@ export default function KnowledgeHubHome() {
   const code: string = "485-439";
   const pathname = usePathname();
   const { gameInfo } = useMyContext();
+  const eventImgSrc = gameInfo?.event_logo;
+
   return (
     <div className="mainBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
@@ -15,7 +17,7 @@ export default function KnowledgeHubHome() {
           <QrCodePart
             code={code}
             gameType={KNOWLEDGE_HUB}
-            nextPage={`${pathname}/questions`}
+            nextPage={`${pathname}/questions?getNextQuestion=true`}
           />
           <div className="w-full h-full flex flex-col justify-around">
             <div className="flex gap-[1.563vw] justify-end items-center h-[5.93vh] ">
@@ -26,13 +28,17 @@ export default function KnowledgeHubHome() {
                 className="h-full w-auto object-contain"
                 alt="Gsk"
               />
-              <Image
-                src={"/logos/kepra.webp"}
-                height={64}
-                width={143}
-                className="h-full w-auto object-contain"
-                alt="kepra"
-              />
+              {eventImgSrc ? (
+                <Image
+                  src={eventImgSrc}
+                  height={400}
+                  width={400}
+                  className="h-full w-auto object-contain"
+                  alt={"event logo"}
+                />
+              ) : (
+                <div></div>
+              )}
             </div>
             <div className="flex justify-end items-center w-full">
               <div className="w-[32.76vw]">

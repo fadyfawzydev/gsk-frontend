@@ -52,7 +52,7 @@ export default function LoginPage({
     <div className="loginBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
         <div className="flex h-screen w-full flex-col justify-center items-start gap-y-[3.15vh] relative">
-          <div className="relative min-w-[46.35vw]  h-auto min-h-[40vh]">
+          <div className="relative min-w-[46.35vw] h-auto min-h-[35vh]">
             <div className="absolute -top-[15vh] left-1/2 transform -translate-x-1/2  z-10 ">
               <div className="w-[21.45vw]">
                 <Image

@@ -1,6 +1,9 @@
 "use client";
 import { useMyContext } from "@/app/_components/providers/ContextProvider";
+import { ArrowRight } from "@/app/_components/svgs/ArrowRight";
+import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 interface WheelProps {}
@@ -30,12 +33,45 @@ const Wheel = () => {
     }
     // Note: We do not stop spinning here, we let it stop naturally when the timeout occurs
   };
+  const { gameInfo } = useMyContext();
+  const eventImgSrc = gameInfo?.event_logo;
+
+  const router = useRouter();
+  const { gameName, gameType } = useParams<{
+    gameName: string;
+    gameType: string;
+  }>();
+
+  const goToQuestions = () => {
+    router.push(`/${gameName}/${gameType}/questions?getNextQuestion=true`);
+  };
 
   return (
     <div className="wheelBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
         <div className="flex h-screen w-full justify-between items-center gap-y-[3.15vh] relative">
           <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 ">
+            {eventImgSrc ? (
+              <Image
+                src={eventImgSrc}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            ) : (
+              <Image
+                src={`${
+                  gameType === KNOWLEDGE_HUB
+                    ? "/logos/kepra.webp"
+                    : "/logos/kepra_white.webp"
+                }`}
+                height={400}
+                width={400}
+                className="h-full w-auto object-contain"
+                alt={"event logo"}
+              />
+            )}
             <Image
               src={"/logos/gsk_white.webp"}
               height={43}
@@ -43,17 +79,10 @@ const Wheel = () => {
               className="h-full w-auto object-contain"
               alt="Gsk"
             />
-            <Image
-              src={"/logos/kepra_white.webp"}
-              height={64}
-              width={143}
-              className="h-full w-auto object-contain"
-              alt="kepra"
-            />
           </div>
           <div className="absolute bottom-0 w-[17.14vw]">
             <Image
-              src={"/logos/wheel_of_knowledge.webp"}
+              src={"/logos/wheel-of-knowledge.webp"}
               height={540}
               width={850}
               className="h-auto w-full object-contain"
@@ -63,16 +92,19 @@ const Wheel = () => {
           <div className="w-full h-full relative">
             <div className="absolute top-[20vh] right-0">
               <button
-                onClick={handleSpinClick}
-                className="flex justify-center items-center w-[433px] relative gap-6 p-8 rounded-[200px]"
+                onClick={() => {
+                  !isSpinning ? handleSpinClick() : goToQuestions();
+                }}
+                className="flex justify-center items-center w-[22.55vw] relative gap-6 p-8 rounded-[200px]"
                 style={{
                   background:
                     "linear-gradient(201.84deg, #d7ba85 -72.79%, #fdc49c -16.14%, #bd8e37 49%, #ffffd1 119.81%, #fc9c57 210.44%)",
                   boxShadow: "0px 4px 10px 0 rgba(0,0,0,0.24)",
                 }}
               >
-                <p className="flex-grow-0 flex-shrink-0 text-[34px] text-center text-white">
-                  {isSpinning ? "Show Question" : "Spin"}
+                <p className="flex flex-grow-0 shrink-0 text-[2vw] gap-[1.25vw] items-center text-center text-white">
+                  {isSpinning ? `Show Question` : "Spin"}{" "}
+                  {isSpinning && <ArrowRight className="w-[2.60vw]" />}
                 </p>
               </button>
             </div>
