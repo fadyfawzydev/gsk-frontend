@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
-import React from "react";
-import QrCodePart from "../_components/QrCodePart";
+import QrCodePart from "../../QrCodePart";
+import { useParams } from "next/navigation";
 
-interface WheelProps {}
-const Wheel = () => {
-  const code = "123-678";
-
+export default function KnowledgeWheelHome() {
+  const code: string = "485-439";
+  const { gameName, gameType } = useParams<{
+    gameName: string;
+    gameType: string;
+  }>();
   return (
     <div className="wheelBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
@@ -36,11 +38,14 @@ const Wheel = () => {
               alt="Wheel"
             />
           </div>
-          <QrCodePart code={code} fgColor="#fff" />
+          <QrCodePart
+            code={code}
+            gameType="knowledge-wheel"
+            fgColor="#fff"
+            nextPage={`/${gameName}/${gameType}/wheel`}
+          />
         </div>
       </div>
     </div>
   );
-};
-
-export default Wheel;
+}

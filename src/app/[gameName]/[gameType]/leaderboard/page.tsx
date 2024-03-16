@@ -1,8 +1,15 @@
 "use client";
+import { Avatar } from "@/app/_components/svgs/Avatar";
+import {
+  KNOWLEDGE_HUB,
+  KNOWLEDGE_WHEEL,
+  TREASURE_HUNT,
+} from "@/app/_constants/gameTypes";
+import { mockStudents } from "@/app/_mocks/mockData";
+import clsx from "clsx";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React from "react";
-import { mockStudents } from "../_mocks/mockData";
-import { Avatar } from "../_components/svgs/Avatar";
 import CountUp from "react-countup";
 
 export interface Student {
@@ -15,9 +22,16 @@ interface LeaderboardProps {}
 const Leaderboard = () => {
   const topThree = mockStudents.slice(0, 3);
   const others = mockStudents.slice(3);
+  const { gameType } = useParams<{ gameType: string }>();
 
+  const mainBgStyle = clsx({
+    "knowledgeHubWinnersBg ": gameType === KNOWLEDGE_HUB,
+    "knowledgeWheelWinnersBg ": gameType === KNOWLEDGE_WHEEL,
+    "treasureHuntWinnersBg ": gameType === TREASURE_HUNT,
+    "w-full h-screen overflow-hidden": true,
+  });
   return (
-    <div className="knowledgeWinnersBg w-full h-screen overflow-hidden">
+    <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
         <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
           <div className="flex w-full top-[2.96vh] justify-between items-center h-[5.93vh] absolute ">

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
-import QrCodePart from "../_components/QrCodePart";
+import React, { useState } from "react";
 
 interface WheelProps {}
 const Wheel = () => {
@@ -16,8 +15,7 @@ const Wheel = () => {
       const stopRotation = Math.floor(Math.random() * 721) + 1080;
 
       // Stop spinning after the calculated stopping point
-      setTimeout(() => {
-      }, 5000); // Stop spinning after 5 seconds
+      setTimeout(() => {}, 5000); // Stop spinning after 5 seconds
 
       // Set the stopping point as a CSS variable to be used in the animation
       document.documentElement.style.setProperty(

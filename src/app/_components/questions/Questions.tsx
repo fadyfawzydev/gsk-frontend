@@ -1,25 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { questionBank } from "@/app/_mocks/mockData";
-import QuestionBody from "../questions/QuestionBody";
-import QuestionHeader from "../questions/QuestionHeader";
+import QuestionBody from "./QuestionBody";
+import QuestionHeader from "./QuestionHeader";
 interface QuestionsProps {
-  gameSlug: string;
+  gameType: string;
 }
 export default function Questions({
-  gameSlug = "knowledge_hub",
+  gameType = "knowledge_hub",
 }: QuestionsProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
   const router = useRouter();
   const isLastQuestion = currentQuestionIndex === questionBank.length - 1;
-
+  const { gameName } = useParams<{ gameName: string }>();
   const handleNextQuestion = () => {
     if (isLastQuestion) {
       // Here you can handle showing the results
-      router.push("/leaderboard");
+      router.push(`/${gameName}/${gameType}/leaderboard`);
     } else {
       // Move to the next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -35,7 +35,7 @@ export default function Questions({
     <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
       <QuestionHeader
         question={questionBank[currentQuestionIndex].question}
-        gameSlug={gameSlug}
+        gameType={gameType}
       />
       <QuestionBody
         answers={questionBank[currentQuestionIndex].answers}

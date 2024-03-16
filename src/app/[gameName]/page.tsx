@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { useMyContext } from "../_components/providers/ContextProvider";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage({
   params,
@@ -8,7 +10,13 @@ export default function LoginPage({
   params: { gameName?: string };
 }) {
   const { gameName } = params;
+  const { gameType, updateGameType } = useMyContext();
+  const router = useRouter();
 
+  const handleLogin = () => {
+    updateGameType("knowledge-hub");
+    router.push(`/${gameName}/${gameType}`);
+  };
   return (
     <div className="loginBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
@@ -39,13 +47,19 @@ export default function LoginPage({
                   className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
                   placeholder="Please enter your password"
                 />
-                <Image
-                  src={"/shapes/login.webp"}
-                  width={433}
-                  height={579}
-                  className="h-[8vh] w-full object-contain"
-                  alt=""
-                />
+                <button
+                  onClick={() => {
+                    handleLogin();
+                  }}
+                >
+                  <Image
+                    src={"/shapes/login.webp"}
+                    width={433}
+                    height={579}
+                    className="h-[8vh] w-full object-contain"
+                    alt=""
+                  />
+                </button>
               </div>
             </div>
           </div>

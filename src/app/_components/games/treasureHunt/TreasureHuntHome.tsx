@@ -1,20 +1,14 @@
-"use client";
 import Image from "next/image";
-import React from "react";
-import { mockStudents } from "../_mocks/mockData";
-import { Avatar } from "../_components/svgs/Avatar";
-import CountUp from "react-countup";
-import QrCodePart from "../_components/QrCodePart";
+import QrCodePart from "../../QrCodePart";
+import { useParams } from "next/navigation";
 
-export interface Student {
-  id: string;
-  name: string;
-  avatar: string;
-  score: number;
-}
-interface TreasureProps {}
-const Treasure = () => {
-  const code = "123-678";
+export default function TreasureHuntHome() {
+  const code: string = "485-439";
+  const { gameName, gameType } = useParams<{
+    gameName: string;
+    gameType: string;
+  }>();
+
   return (
     <div className="treasureBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
@@ -35,7 +29,7 @@ const Treasure = () => {
               alt="kepra"
             />
           </div>
-          <div className="flex h-[50vh] ">
+          <div className="flex h-[50vh]">
             <Image
               src={"/logos/treasure_hunt.webp"}
               height={540}
@@ -44,11 +38,14 @@ const Treasure = () => {
               alt="Treasure"
             />
           </div>
-          <QrCodePart code={code} fgColor="#fff" />
+          <QrCodePart
+            gameType="treasure-hunt"
+            code={code}
+            fgColor="#fff"
+            nextPage={`/${gameName}/${gameType}/map`}
+          />
         </div>
       </div>
     </div>
   );
-};
-
-export default Treasure;
+}

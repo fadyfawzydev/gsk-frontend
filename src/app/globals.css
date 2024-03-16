@@ -11,10 +11,6 @@
   background-image: url("/bgs/sec.webp");
   @apply bg-cover bg-no-repeat;
 }
-.knowledgeWinnersBg {
-  background-image: url("/bgs/knowledge_winners.webp");
-  @apply bg-cover bg-no-repeat;
-}
 .treasureBg {
   background-image: url("/bgs/treasure.webp");
   @apply bg-cover bg-no-repeat;
@@ -33,6 +29,18 @@
 }
 .treasureQuestionBg {
   background-image: url("/bgs/treasureQuestion.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.knowledgeWheelWinnersBg {
+  background-image: url("/bgs/knowledge-wheel-results.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.treasureHuntWinnersBg {
+  background-image: url("/bgs/treasure-hunt-results.webp");
+  @apply bg-cover bg-no-repeat;
+}
+.knowledgeHubWinnersBg {
+  background-image: url("/bgs/knowledge-hub-results.webp");
   @apply bg-cover bg-no-repeat;
 }
 
