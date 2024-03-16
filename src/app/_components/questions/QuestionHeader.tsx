@@ -21,11 +21,8 @@ const QuestionHeader = ({ question, gameType }: QuestionHeaderProps) => {
       </div>
       <div className="absolute -top-[5vh] left-[51%] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 transform -translate-x-[51%] z-[1] h-[17.87vh] w-[10.05vw] rounded-full"></div>
       <div className="z-[2] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full">
-        <h5 className="text-white text-[2.71vw] font-bold flex flex-col items-center gap-y-[0.75vh] px-[3vw] py-[2.5vh] text-ellipsis">
-          <span className="text-white text-[2.71vw] font-normal">
-            How question?
-          </span>
-          <span className="font-bold">{question}</span>
+        <h5 className="text-white text-[2.71vw] font-bold text-center flex flex-col items-center gap-y-[0.75vh] px-[3vw] py-[2.5vh] text-ellipsis">
+          {question}
         </h5>
       </div>
     </div>

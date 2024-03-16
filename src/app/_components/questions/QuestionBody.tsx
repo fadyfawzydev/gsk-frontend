@@ -1,25 +1,22 @@
 import React from "react";
 import clsx from "clsx";
-
-interface Answer {
-  text: string;
-  correct: boolean;
-}
+import { IAnswer } from "@/app/_types";
 
 interface QuestionBodyProps {
-  answers: Answer[];
+  answers: IAnswer[];
   className?: string;
-  showCorrectAnswer: boolean;
-  onAnswerClick: (correct: boolean) => void;
+  correctAnswerId: number;
+  showAnswer: boolean;
+  onAnswerClick: () => void;
 }
 
 const QuestionBody = ({
   className = "grid w-[46.35vw] grid-cols-2 gap-[1.563vw]",
   answers,
-  showCorrectAnswer,
+  correctAnswerId,
+  showAnswer,
   onAnswerClick,
 }: QuestionBodyProps) => {
-  console.log(showCorrectAnswer);
   return (
     <div className={className}>
       {answers.map((answer, index) => (
@@ -28,11 +25,13 @@ const QuestionBody = ({
           className={clsx(
             "h-[10.37vh] p-[1.67vw] bg-amber-500 bg-opacity-60 rounded-[10.42vw] shadow-inner backdrop-blur-[4.35vw] justify-start items-center gap-[1.30vw] flex",
             {
-              "!bg-[#A2B000]": showCorrectAnswer && answer.correct,
-              "!bg-[#F72900]": showCorrectAnswer && !answer.correct,
+              "!bg-[#A2B000]":
+                showAnswer && answer.answer_id === correctAnswerId,
+              "!bg-[#F72900]":
+                showAnswer && answer.answer_id !== correctAnswerId,
             }
           )}
-          onClick={() => onAnswerClick(answer.correct)}
+          onClick={() => onAnswerClick()}
         >
           <div className="w-[2.50vw] h-[4.44vh] shirnk-0 bg-white rounded-full grid place-items-center">
             <h6 className="text-center text-[1.25vw] font-bold text-slate-600">
@@ -40,7 +39,7 @@ const QuestionBody = ({
             </h6>
           </div>
           <div className="text-center text-white text-[1.25vw] font-semibold">
-            {answer.text}
+            {answer.answer_title}
           </div>
         </div>
       ))}

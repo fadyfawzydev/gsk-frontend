@@ -1,26 +1,21 @@
-// Import Axios
-import axios, { AxiosResponse } from "axios";
+// Import any necessary dependencies
 
 // Define constants
 const BASE_URL = "https://game.invent.solutions/public/api/v1";
 
 // Function to handle POST requests with formdata
-async function postData(
-  url: string,
-  formData: FormData,
-  authToken?: string
-): Promise<any> {
-  const headers: Record<string, string> = {
-    "Content-Type": "multipart/form-data",
-  };
+async function postData(url: string, formData: FormData, authToken?: string) {
+  const headers: Record<string, string> = {};
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
   }
 
-  const response: AxiosResponse<any> = await axios.post(url, formData, {
+  const response = await fetch(url, {
+    method: "POST",
     headers,
+    body: formData,
   });
-  return response.data;
+  return response.json();
 }
 
 // Admin Start Play endpoint function
@@ -29,7 +24,7 @@ export async function adminStartPlay(
   password: string,
   gameSlug: string,
   authToken: string
-): Promise<any> {
+) {
   const formData = new FormData();
   formData.append("username", username);
   formData.append("password", password);
@@ -39,13 +34,13 @@ export async function adminStartPlay(
 }
 
 // Admin Next Question endpoint function
-export async function adminNextQuestion(authToken: string): Promise<any> {
+export async function adminNextQuestion(authToken: string) {
   const url = `${BASE_URL}/Admin/NextQuestion`;
   return postData(url, new FormData(), authToken);
 }
 
 // Admin Winners List endpoint function
-export async function adminWinnersList(authToken: string): Promise<any> {
+export async function adminWinnersList(authToken: string) {
   const url = `${BASE_URL}/Admin/Winnerslist`;
   return postData(url, new FormData(), authToken);
 }

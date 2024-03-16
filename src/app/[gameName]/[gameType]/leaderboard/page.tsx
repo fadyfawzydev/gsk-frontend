@@ -6,24 +6,41 @@ import {
   KNOWLEDGE_WHEEL,
   TREASURE_HUNT,
 } from "@/app/_constants/gameTypes";
-import { mockStudents } from "@/app/_mocks/mockData";
 import clsx from "clsx";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import CountUp from "react-countup";
-import { useEffect } from "react";
-export interface Student {
-  id: string;
-  name: string;
-  avatar: string;
-  score: number;
+import { useCallback, useEffect, useState } from "react";
+import { adminWinnersList } from "@/app/_services/api";
+export interface Winner {
+  winner_name: string;
+  winner_score: number;
 }
 interface LeaderboardProps {}
 const Leaderboard = () => {
-  const topThree = mockStudents.slice(0, 3);
-  const others = mockStudents.slice(3);
+  const [winners, setWinners] = useState<Winner[]>();
   const { gameType } = useParams<{ gameType: string }>();
-  const { checkTokenAndRedirect } = useMyContext();
+  const { checkTokenAndRedirect, gameInfo } = useMyContext();
+
+  const fetchNextQuestion = useCallback(async () => {
+    try {
+      const authToken = gameInfo?._token || "";
+      const response = await adminWinnersList(authToken);
+      console.log("response", response);
+      setWinners(response.data);
+      console.log("winners", winners);
+    } catch (error) {
+      console.error("Error fetching next question:", error);
+    }
+  }, [gameInfo?._token, winners]);
+
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
+
+  useEffect(() => {
+    fetchNextQuestion();
+  }, [fetchNextQuestion]);
 
   useEffect(() => {
     checkTokenAndRedirect();
@@ -34,6 +51,17 @@ const Leaderboard = () => {
     "treasureHuntWinnersBg ": gameType === TREASURE_HUNT,
     "w-full h-screen overflow-hidden": true,
   });
+
+  const topThreeWinners = winners?.slice(0, 3);
+  const remainingWinners = winners?.slice(3);
+
+  // Rearrange the top three winners to replace the first with the second
+  if (topThreeWinners && topThreeWinners.length >= 2) {
+    const tempWinner = topThreeWinners[0];
+    topThreeWinners[0] = topThreeWinners[1];
+    topThreeWinners[1] = tempWinner;
+  }
+
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
@@ -57,71 +85,73 @@ const Leaderboard = () => {
           <div className="relative w-[46.35vw] h-auto">
             <div className="flex flex-col w-full gap-y-[3.15vh]">
               <div className="flex w-full">
-                {topThree.map((student, index) => (
-                  <div
-                    key={student.id}
-                    className={`${
-                      index === 1
-                        ? "-ms-[0.52vw]"
-                        : index === 0
-                        ? "secondPlace"
-                        : "-ms-[0.56vw]"
-                    } relative w-full`}
-                  >
-                    <Image
-                      src={`/shapes/leaderboard/${
+                {topThreeWinners &&
+                  topThreeWinners.map((winner, index) => (
+                    <div
+                      key={index}
+                      className={`${
                         index === 1
-                          ? "firstPlace"
+                          ? "-ms-[0.52vw]"
                           : index === 0
                           ? "secondPlace"
-                          : "thirdPlace"
-                      }.svg`}
-                      width={890}
-                      height={579}
-                      className="h-auto w-full object-contain"
-                      alt=""
-                    />
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
-                      <div className="text-center px-[0.78vw]">
-                        <span className="text-[#00345D] text-[1.25vw] font-normal">
-                          {student.name}
-                        </span>
-                        <br />
-                        <span className="text-[#FFA400] text-[2.4vw] font-bold ">
-                          <CountUp end={student.score} />
-                        </span>
+                          : "-ms-[0.56vw]"
+                      } relative w-full`}
+                    >
+                      <Image
+                        src={`/shapes/leaderboard/${
+                          index === 1
+                            ? "firstPlace"
+                            : index === 0
+                            ? "secondPlace"
+                            : "thirdPlace"
+                        }.svg`}
+                        width={890}
+                        height={579}
+                        className="h-auto w-full object-contain"
+                        alt=""
+                      />
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
+                        <div className="text-center px-[0.78vw]">
+                          <span className="text-[#00345D] text-[1.25vw] font-normal">
+                            {winner.winner_name}
+                          </span>
+                          <br />
+                          <span className="text-[#FFA400] text-[2.4vw] font-bold ">
+                            <CountUp end={winner.winner_score} />
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>
           <div className="relative w-[62.4vw] h-auto">
             <div className="grid grid-cols-2 w-full gap-y-[3.15vh] gap-x-[1.67vw]">
-              {others.map((student, index) => (
-                <div
-                  key={student.id}
-                  className="h-[8.68vh] relative bg-white shadow-custom rounded-[0.75vw]"
-                >
-                  <div className="flex justify-between items-center gap-[1.25vw] h-full px-[1.25vw]">
-                    <div className="flex gap-[1.25vw] justify-between items-center">
-                      <div className="text-sky-950 text-[1.7vw] font-normal">
-                        {index + 4}
+              {remainingWinners &&
+                remainingWinners.map((winner, index) => (
+                  <div
+                    key={index}
+                    className="h-[8.68vh] relative bg-white shadow-custom rounded-[0.75vw]"
+                  >
+                    <div className="flex justify-between items-center gap-[1.25vw] h-full px-[1.25vw]">
+                      <div className="flex gap-[1.25vw] justify-between items-center">
+                        <div className="text-sky-950 text-[1.7vw] font-normal">
+                          {index + 4}
+                        </div>
+                        <div className="w-[3.33vw]">
+                          <Avatar className="w-full" />
+                        </div>
+                        <div className="text-sky-950 text-[1.25vw] font-normal">
+                          {winner.winner_name}
+                        </div>
                       </div>
-                      <div className="w-[3.33vw]">
-                        <Avatar className="w-full" />
+                      <div className="text-amber-500 text-[1.35vw] font-bold">
+                        {winner.winner_score}
                       </div>
-                      <div className="text-sky-950 text-[1.25vw] font-normal">
-                        {student.name}
-                      </div>
-                    </div>
-                    <div className="text-amber-500 text-[1.35vw] font-bold">
-                      {student.score}
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>

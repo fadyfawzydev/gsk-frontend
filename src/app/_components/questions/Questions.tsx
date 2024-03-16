@@ -5,12 +5,13 @@ import { useParams, useRouter } from "next/navigation";
 import { questionBank } from "@/app/_mocks/mockData";
 import QuestionBody from "./QuestionBody";
 import QuestionHeader from "./QuestionHeader";
+import { IQuestion } from "@/app/_types";
 interface QuestionsProps {
   gameType: string;
+  question: IQuestion | undefined;
 }
-export default function Questions({
-  gameType = "knowledge_hub",
-}: QuestionsProps) {
+export default function Questions({ gameType, question }: QuestionsProps) {
+  console.log(question);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
   const router = useRouter();
@@ -27,19 +28,20 @@ export default function Questions({
     }
   };
 
-  const handleAnswerClick = (correct: boolean) => {
-    setShowCorrectAnswer(true);
+  const handleAnswerClick = () => {
+    setShowCorrectAnswer(!showCorrectAnswer);
   };
 
   return (
     <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
       <QuestionHeader
-        question={questionBank[currentQuestionIndex].question}
+        question={question?.question_title || ""}
         gameType={gameType}
       />
       <QuestionBody
-        answers={questionBank[currentQuestionIndex].answers}
-        showCorrectAnswer={showCorrectAnswer}
+        answers={question?.answers || []}
+        showAnswer={showCorrectAnswer}
+        correctAnswerId={question?.correct_answer_id || 0}
         onAnswerClick={handleAnswerClick}
       />
       <button

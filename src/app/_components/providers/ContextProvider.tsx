@@ -67,11 +67,7 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
   };
 
   const checkTokenAndRedirect = () => {
-    console.log("Checking token and redirecting...");
-    console.log("Current gameInfo:", gameInfo);
-
     if (!gameInfo || gameInfo._token === undefined) {
-      console.log("Redirecting...");
       router.push("/nintendo");
       return null;
     }
