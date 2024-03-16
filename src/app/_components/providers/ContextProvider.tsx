@@ -1,13 +1,22 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define types for your context
 type MyContextType = {
-  gameType: string;
-  sessionToken: string;
-  updateGameType: (newGameType: string) => void;
-  updateSessionToken: (newSessionToken: string) => void;
+  gameInfo: GameInfo | null;
+  updateGameInfo: (newGameInfo: GameInfo) => void;
+  checkTokenAndRedirect: () => void;
+};
+
+type GameInfo = {
+  gameUrl: string;
+  gameTypeSlug: string;
+  eventLogo: string;
+  pinCode: string;
+  eventColor: string;
+  token: string;
+  tokenType: string;
 };
 
 // Initialize the context
@@ -28,20 +37,27 @@ type ContextProviderProps = {
 };
 
 export const ContextProvider = ({ children }: ContextProviderProps) => {
-  const [gameType, setGameType] = useState("");
-  const [sessionToken, setSessionToken] = useState("");
+  const router = useRouter();
+  const [gameInfo, setGameInfo] = useState<GameInfo | null>(null);
 
-  const updateGameType = (newGameType: string) => {
-    setGameType(newGameType);
+  const updateGameInfo = (newGameInfo: GameInfo) => {
+    setGameInfo(newGameInfo);
   };
 
-  const updateSessionToken = (newSessionToken: string) => {
-    setSessionToken(newSessionToken);
+  const checkTokenAndRedirect = () => {
+    if (!gameInfo || !gameInfo.token) {
+      router.push("/nintendo");
+      return null;
+    }
   };
 
   return (
     <MyContext.Provider
-      value={{ gameType, sessionToken, updateGameType, updateSessionToken }}
+      value={{
+        gameInfo,
+        updateGameInfo,
+        checkTokenAndRedirect,
+      }}
     >
       {children}
     </MyContext.Provider>

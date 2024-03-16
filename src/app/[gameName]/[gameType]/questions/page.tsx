@@ -1,4 +1,5 @@
 "use client";
+import { useMyContext } from "@/app/_components/providers/ContextProvider";
 import Questions from "@/app/_components/questions/Questions";
 import {
   KNOWLEDGE_HUB,
@@ -8,14 +9,18 @@ import {
 import clsx from "clsx";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Page = () => {
   const { gameName, gameType } = useParams<{
     gameName: string;
     gameType: string;
   }>();
+  const { checkTokenAndRedirect } = useMyContext();
 
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
   const mainBgStyle = clsx({
     "secBg ": gameType === KNOWLEDGE_HUB,
     "wheelBg ": gameType === KNOWLEDGE_WHEEL,

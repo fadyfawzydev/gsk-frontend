@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import KnowledgeHubHome from "@/app/_components/games/knowledgeHub/KnowledgeHubHome";
 import KnowledgeWheelHome from "@/app/_components/games/knowledgeWheel/KnowledgeWheelHome";
@@ -9,6 +9,7 @@ import {
   KNOWLEDGE_WHEEL,
   TREASURE_HUNT,
 } from "@/app/_constants/gameTypes";
+import { useMyContext } from "@/app/_components/providers/ContextProvider";
 
 export default function GameHome({
   params,
@@ -16,7 +17,11 @@ export default function GameHome({
   params: { gameType?: string };
 }) {
   const { gameType } = params;
-  const router = useRouter();
+  const { checkTokenAndRedirect } = useMyContext();
+
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
 
   if (gameType === KNOWLEDGE_HUB) {
     return <KnowledgeHubHome />;

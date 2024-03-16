@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { useMyContext } from "../_components/providers/ContextProvider";
 import { useRouter } from "next/navigation";
+import { adminStartPlay } from "../_services/api";
 
 export default function LoginPage({
   params,
@@ -10,13 +11,43 @@ export default function LoginPage({
   params: { gameName?: string };
 }) {
   const { gameName } = params;
-  const { gameType, updateGameType } = useMyContext();
+  const { gameInfo, updateGameInfo } = useMyContext();
   const router = useRouter();
 
-  const handleLogin = () => {
-    updateGameType("knowledge-hub");
-    router.push(`/${gameName}/${gameType}`);
+  const handleLogin = async () => {
+    try {
+      // Assuming you have the username and password inputs, get their values
+      const usernameInput = document.getElementById(
+        "username"
+      ) as HTMLInputElement;
+      const passwordInput = document.getElementById(
+        "password"
+      ) as HTMLInputElement;
+      if (!usernameInput || !passwordInput) return;
+
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+
+      // Call the Admin Start Play API
+      const startPlayResponse = await adminStartPlay(
+        username,
+        password,
+        gameName || "",
+        ""
+      );
+      console.log(startPlayResponse);
+      // Update session token and game type in context
+      const { data } = startPlayResponse;
+      updateGameInfo(data);
+
+      // Redirect to the appropriate page
+      router.push(`/${gameName}/${data.game_type_slug}`);
+    } catch (error) {
+      console.error("Error logging in:", error);
+      // Handle login error
+    }
   };
+
   return (
     <div className="loginBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">
@@ -36,14 +67,15 @@ export default function LoginPage({
             <div className="absolute -top-[5vh] left-[51%] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 transform -translate-x-[51%] z-[1] h-[17.87vh] w-[10.05vw] rounded-full"></div>
             <div className="z-[2] bg-gradient-to-br from-orange-300 via-orange-400 to-orange-600 shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full">
               <div className="text-center flex flex-col items-center gap-y-[2.5vh] w-full">
-                {gameName}
                 <input
                   type="text"
+                  id="username"
                   className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
                   placeholder="Please enter your username"
                 />
                 <input
                   type="password"
+                  id="password"
                   className="h-[7.25vh] w-[75%] relative bg-white shadow-custom rounded-[0.75vw] outline-none text-[1.75vw] placeholder:text-[1.5vw] px-[1.67vw]"
                   placeholder="Please enter your password"
                 />

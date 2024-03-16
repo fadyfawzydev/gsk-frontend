@@ -1,4 +1,5 @@
 "use client";
+import { useMyContext } from "@/app/_components/providers/ContextProvider";
 import { Avatar } from "@/app/_components/svgs/Avatar";
 import {
   KNOWLEDGE_HUB,
@@ -9,9 +10,8 @@ import { mockStudents } from "@/app/_mocks/mockData";
 import clsx from "clsx";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React from "react";
 import CountUp from "react-countup";
-
+import { useEffect } from "react";
 export interface Student {
   id: string;
   name: string;
@@ -23,7 +23,11 @@ const Leaderboard = () => {
   const topThree = mockStudents.slice(0, 3);
   const others = mockStudents.slice(3);
   const { gameType } = useParams<{ gameType: string }>();
+  const { checkTokenAndRedirect } = useMyContext();
 
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
   const mainBgStyle = clsx({
     "knowledgeHubWinnersBg ": gameType === KNOWLEDGE_HUB,
     "knowledgeWheelWinnersBg ": gameType === KNOWLEDGE_WHEEL,

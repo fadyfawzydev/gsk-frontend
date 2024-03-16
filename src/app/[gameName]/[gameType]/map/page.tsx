@@ -1,8 +1,16 @@
+"use client";
+
+import { useMyContext } from "@/app/_components/providers/ContextProvider";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface MapProps {}
 const Map = () => {
+  const { checkTokenAndRedirect } = useMyContext();
+
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
   return (
     <div className="mapBg w-full h-screen overflow-hidden">
       <div className="h-screen px-[1.563vw] relative">

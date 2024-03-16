@@ -1,11 +1,16 @@
 "use client";
+import { useMyContext } from "@/app/_components/providers/ContextProvider";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface WheelProps {}
 const Wheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
+  const { checkTokenAndRedirect } = useMyContext();
 
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, [checkTokenAndRedirect]);
   const handleSpinClick = () => {
     if (!isSpinning) {
       // Start spinning
