@@ -3,7 +3,7 @@ export interface IQuestion {
   correct_answer_id: number;
   remaining_questions: number;
   counter: number;
-  question_time?: number;
+  question_time: number;
   answers: IAnswer[];
 }
 

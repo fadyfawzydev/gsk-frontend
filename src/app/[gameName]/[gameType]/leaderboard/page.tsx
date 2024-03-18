@@ -55,7 +55,7 @@ const Leaderboard = () => {
   const filledWinners = winners
     ? winners.concat(
         Array(Math.max(0, 3 - winners.length)).fill({
-          winner_name: "",
+          winner_name: "null",
           winner_score: 0,
         })
       )
@@ -113,16 +113,26 @@ const Leaderboard = () => {
                         index === 1
                           ? "-ms-[0.4vw] z-[20]"
                           : index === 0
-                          ? "secondPlace z-[10]"
-                          : "-ms-[0.46vw] z-[5]"
+                          ? winner.winner_name === "null"
+                            ? ""
+                            : "secondPlace z-[10]"
+                          : "-ms-[0.55vw] z-[5]"
                       } relative w-full flex items-end`}
                     >
                       <Image
                         src={`/shapes/leaderboard/${
                           index === 1
                             ? "firstPlace"
+                            : index === 0 &&
+                              (winner.winner_name === "null" ||
+                                !winner.winner_name)
+                            ? "secondPlaceWithoutCard"
                             : index === 0
                             ? "secondPlace"
+                            : index === 2 &&
+                              (winner.winner_name === "null" ||
+                                !winner.winner_name)
+                            ? "thirdPlaceWithoutCard"
                             : "thirdPlace"
                         }.svg`}
                         width={890}
@@ -132,13 +142,17 @@ const Leaderboard = () => {
                       />
                       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
                         <div className="text-center px-[0.78vw]">
-                          <span className="text-[#00345D] text-[1.25vw] font-normal">
-                            {winner.winner_name}
-                          </span>
-                          <br />
-                          <span className="text-[#FFA400] text-[2.4vw] font-bold ">
-                            <CountUp end={winner.winner_score} />
-                          </span>
+                          {winner.winner_name !== "null" && (
+                            <div>
+                              <span className="text-[#00345D] text-[1.25vw] font-normal">
+                                {winner.winner_name}
+                              </span>
+                              <br />
+                              <span className="text-[#FFA400] text-[2.4vw] font-bold ">
+                                <CountUp end={winner.winner_score} />
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

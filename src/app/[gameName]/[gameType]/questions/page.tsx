@@ -25,7 +25,6 @@ const Page = () => {
   }>();
   const searchParams = useSearchParams();
   const getNext = searchParams.get("getNextQuestion");
-  console.log(!!getNext);
   const { checkTokenAndRedirect, gameInfo } = useMyContext();
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
   const [getNextQuestion, setGetNextQuestion] = useState(!!getNext);

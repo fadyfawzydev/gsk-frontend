@@ -42,7 +42,6 @@ export default function Questions({ gameType, question }: QuestionsProps) {
         answers={question?.answers || []}
         showAnswer={showCorrectAnswer}
         correctAnswerId={question?.correct_answer_id || 0}
-        onAnswerClick={handleAnswerClick}
       />
       <button
         className="w-[22.55vw] h-[12.04vh] absolute bottom-10 right-10"
