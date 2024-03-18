@@ -8,7 +8,6 @@ interface QuestionBodyProps {
   className?: string;
   correctAnswerId: number;
   showAnswer: boolean;
-  onAnswerClick: () => void;
 }
 
 const QuestionBody = ({
@@ -16,7 +15,6 @@ const QuestionBody = ({
   answers,
   correctAnswerId,
   showAnswer,
-  onAnswerClick,
 }: QuestionBodyProps) => {
   const { gameInfo } = useMyContext();
 
@@ -36,7 +34,6 @@ const QuestionBody = ({
                 showAnswer && answer.answer_id !== correctAnswerId,
             }
           )}
-          onClick={() => onAnswerClick()}
         >
           <div className="w-[2.50vw] h-[4.44vh] shirnk-0 bg-white rounded-full grid place-items-center">
             <h6 className="text-center text-[1.25vw] font-bold text-slate-600">

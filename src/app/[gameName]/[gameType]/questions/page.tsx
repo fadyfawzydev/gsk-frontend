@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import CountdownTimer from "@/app/_components/countdownTimer/CountdownTimer";
 
 const Page = () => {
   const router = useRouter();
@@ -71,10 +72,6 @@ const Page = () => {
     }
   };
 
-  const handleAnswerClick = () => {
-    setShowCorrectAnswer(!showCorrectAnswer);
-  };
-
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
@@ -107,30 +104,32 @@ const Page = () => {
             answers={question?.answers || []}
             showAnswer={showCorrectAnswer}
             correctAnswerId={question?.correct_answer_id || 0}
-            onAnswerClick={handleAnswerClick}
           />
-          <button
-            className="w-[22.55vw] h-[12.04vh] absolute bottom-10 right-10"
-            onClick={
-              showCorrectAnswer
-                ? handleNextQuestion
-                : () => setShowCorrectAnswer(true)
-            }
-          >
-            <Image
-              src={`/shapes/${
+          <div className="absolute bottom-10 w-full flex justify-between">
+            <CountdownTimer timer={question?.question_time || 0} />
+            <button
+              className="w-[22.55vw] h-[12.04vh]"
+              onClick={
                 showCorrectAnswer
-                  ? remainingNumber === 0
-                    ? "leaderboard.svg"
-                    : "nextQuestion.svg"
-                  : "showAnswer.svg"
-              }`}
-              width={890}
-              height={579}
-              className="h-auto w-full object-contain"
-              alt=""
-            />
-          </button>
+                  ? handleNextQuestion
+                  : () => setShowCorrectAnswer(true)
+              }
+            >
+              <Image
+                src={`/shapes/${
+                  showCorrectAnswer
+                    ? remainingNumber === 0
+                      ? "leaderboard.svg"
+                      : "nextQuestion.svg"
+                    : "showAnswer.svg"
+                }`}
+                width={890}
+                height={579}
+                className="h-auto w-full object-contain"
+                alt=""
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>

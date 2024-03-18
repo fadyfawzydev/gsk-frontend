@@ -141,6 +141,19 @@ const Wheel = () => {
                 </div>
               </div>
             </div>
+            <div
+              className={`w-[48.17vw] absolute bottom-[20vh] left-[52%] transform -translate-x-[52%] z-[2] `}
+            >
+              <div className={`relative w-full h-full `}>
+                <Image
+                  src={"/logos/fireWorks.svg"}
+                  height={540}
+                  width={850}
+                  className={`h-auto w-full object-contain`}
+                  alt="Fireworks"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
