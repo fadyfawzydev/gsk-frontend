@@ -72,12 +72,6 @@ const Leaderboard = () => {
   const topThreeWinners = filledWinners?.slice(0, 3) || [];
   const remainingWinners = filledWinners?.slice(3) || [];
 
-  // // Rearrange the top three winners to replace the first with the second
-  // if (topThreeWinners && topThreeWinners.length >= 2) {
-  //   const tempWinner = topThreeWinners[0];
-  //   topThreeWinners[0] = topThreeWinners[1];
-  //   topThreeWinners[1] = tempWinner;
-  // }
   const eventImgSrc = gameInfo?.event_logo;
 
   return (

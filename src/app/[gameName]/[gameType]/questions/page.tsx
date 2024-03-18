@@ -123,7 +123,7 @@ const Page = () => {
                   ? remainingNumber === 0
                     ? "leaderboard.svg"
                     : "nextQuestion.svg"
-                  : "answerNow.svg"
+                  : "showAnswer.svg"
               }`}
               width={890}
               height={579}

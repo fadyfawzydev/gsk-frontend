@@ -43,7 +43,7 @@ const QuestionBody = ({
               {String.fromCharCode(65 + index)}
             </h6>
           </div>
-          <div className="text-center text-white text-[1.25vw] font-semibold">
+          <div className="text-center text-white text-[1.042vw] font-semibold">
             {answer.answer_title}
           </div>
         </div>
