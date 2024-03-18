@@ -88,17 +88,7 @@ const Page = () => {
               alt={"event logo"}
             />
           ) : (
-            <Image
-              src={`${
-                gameType === KNOWLEDGE_HUB
-                  ? "/logos/kepra.webp"
-                  : "/logos/kepra_white.webp"
-              }`}
-              height={400}
-              width={400}
-              className="h-full w-auto object-contain"
-              alt={"event logo"}
-            />
+            <div></div>
           )}
           <Image
             src={"/logos/gsk_white.webp"}

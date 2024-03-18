@@ -51,15 +51,33 @@ const Leaderboard = () => {
     "w-full h-screen overflow-hidden": true,
   });
 
-  const topThreeWinners = winners?.slice(0, 3);
-  const remainingWinners = winners?.slice(3);
+  // Ensure winners array always contains at least three elements
+  const filledWinners = winners
+    ? winners.concat(
+        Array(Math.max(0, 3 - winners.length)).fill({
+          winner_name: "",
+          winner_score: 0,
+        })
+      )
+    : [];
 
-  // Rearrange the top three winners to replace the first with the second
-  if (topThreeWinners && topThreeWinners.length >= 2) {
-    const tempWinner = topThreeWinners[0];
-    topThreeWinners[0] = topThreeWinners[1];
-    topThreeWinners[1] = tempWinner;
+  // Rearrange the top three winners based on the number of actual winners
+  if (filledWinners.length >= 2) {
+    const tempWinner = filledWinners[0];
+    filledWinners[0] = filledWinners[1];
+    filledWinners[1] = tempWinner;
   }
+
+  // Check if filledWinners is undefined or null and provide a default value if necessary
+  const topThreeWinners = filledWinners?.slice(0, 3) || [];
+  const remainingWinners = filledWinners?.slice(3) || [];
+
+  // // Rearrange the top three winners to replace the first with the second
+  // if (topThreeWinners && topThreeWinners.length >= 2) {
+  //   const tempWinner = topThreeWinners[0];
+  //   topThreeWinners[0] = topThreeWinners[1];
+  //   topThreeWinners[1] = tempWinner;
+  // }
   const eventImgSrc = gameInfo?.event_logo;
 
   return (
@@ -76,17 +94,7 @@ const Leaderboard = () => {
                 alt={"event logo"}
               />
             ) : (
-              <Image
-                src={`${
-                  gameType === KNOWLEDGE_HUB
-                    ? "/logos/kepra.webp"
-                    : "/logos/kepra_white.webp"
-                }`}
-                height={400}
-                width={400}
-                className="h-full w-auto object-contain"
-                alt={"event logo"}
-              />
+              <div></div>
             )}
             <Image
               src={`${

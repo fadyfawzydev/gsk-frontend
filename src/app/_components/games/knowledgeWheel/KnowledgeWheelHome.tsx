@@ -35,22 +35,12 @@ export default function KnowledgeWheelHome() {
                 alt={"event logo"}
               />
             ) : (
-              <Image
-                src={`${
-                  gameType === KNOWLEDGE_HUB
-                    ? "/logos/kepra.webp"
-                    : "/logos/kepra_white.webp"
-                }`}
-                height={400}
-                width={400}
-                className="h-full w-auto object-contain"
-                alt={"event logo"}
-              />
+              <div></div>
             )}
           </div>
           <div className="flex w-[49.6vw] ">
             <Image
-              src={"/logos/wheel_logo.svg"}
+              src={"/logos/wheel.webp"}
               height={540}
               width={850}
               className="h-aut w-full object-contain"
