@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Player from "../players/Player";
+import PlayerRow from "../playerRow/PlayerRow";
 import Pusher from "pusher-js";
 import Image from "next/image";
 import clsx from "clsx";
+import { useParams } from "next/navigation";
 
 const appId = "1775161";
 const key = "eecd5438a7c0310079d6";
@@ -22,8 +23,10 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
   className = "absolute bottom-[0.6vh]",
   diaglogRight = false,
 }) => {
+  const { gameName } = useParams<{
+    gameName: string;
+  }>();
   const [players, setPlayers] = useState<string[]>(["Fady", "Marwan"]);
-  const [totalPlayers, setTotalPlayers] = useState<number>(0);
   const [animateNewPlayer, setAnimateNewPlayer] = useState<boolean>(false);
 
   useEffect(() => {
@@ -31,11 +34,10 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
       cluster: cluster,
     });
 
-    const channel = pusher.subscribe("nintendo");
+    const channel = pusher.subscribe(gameName);
 
     channel.bind("gsk-playerjoined", function (data: PlayerData) {
       const playerName = data.player_name;
-      setTotalPlayers((prevTotal) => prevTotal + 1);
       setAnimateNewPlayer(true); // Trigger animation
       setTimeout(() => {
         setAnimateNewPlayer(false); // Turn off animation after a delay
@@ -48,9 +50,9 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
 
     return () => {
       channel.unbind_all();
-      pusher.unsubscribe("nintendo");
+      pusher.unsubscribe(gameName);
     };
-  }, []);
+  }, [gameName]);
 
   return (
     <div className={className}>
@@ -72,14 +74,14 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
           >
             {!!players.length ? (
               players.map((playerName, index) => (
-                <Player
+                <PlayerRow
                   key={index}
                   playerName={playerName}
                   animate={animateNewPlayer && index === 0} // Apply animation only to the first player
                 />
               ))
             ) : (
-              <Player
+              <PlayerRow
                 playerName={"No players have joined yet."}
                 animate={false}
                 isEmpty={true}
