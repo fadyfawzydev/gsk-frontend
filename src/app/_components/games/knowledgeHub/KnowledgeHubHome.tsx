@@ -3,6 +3,7 @@ import QrCodePart from "../../QrCodePart";
 import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import { usePathname } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
+import PlayersViewer from "../../playersViewer/PlayersViewer";
 
 export default function KnowledgeHubHome() {
   const code: string = "485-439";
@@ -20,7 +21,7 @@ export default function KnowledgeHubHome() {
             nextPage={`${pathname}/questions?getNextQuestion=true`}
           />
           <div className="w-full h-full flex flex-col justify-around">
-            <div className="flex gap-[1.563vw] justify-end items-center h-[5.93vh] ">
+            <div className="flex gap-[1.563vw] justify-end items-center h-[3.98vh] ">
               <Image
                 src={"/logos/gsk.webp"}
                 height={43}
@@ -41,7 +42,7 @@ export default function KnowledgeHubHome() {
               )}
             </div>
             <div className="flex justify-end items-center w-full">
-              <div className="w-[32.76vw]">
+              <div className="w-[27.34vw]">
                 <Image
                   src={"/logos/knowledge-hub.webp"}
                   height={324}
@@ -51,7 +52,7 @@ export default function KnowledgeHubHome() {
                 />
               </div>
             </div>
-            <div className="flex justify-end items-center ">
+            <div className="flex flex-col justify-center items-end gap-y-[1.5vh]">
               <div className="w-[25vw]">
                 <Image
                   src={"/logos/waiting_for_players.webp"}
@@ -61,6 +62,7 @@ export default function KnowledgeHubHome() {
                   alt="waiting_for_players"
                 />
               </div>
+              <PlayersViewer className="" diaglogRight />
             </div>
           </div>
         </div>

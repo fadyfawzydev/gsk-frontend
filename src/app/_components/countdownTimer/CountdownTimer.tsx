@@ -31,4 +31,4 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ timer }) => {
   );
 };
 
-export default CountdownTimer;
+export default React.memo(CountdownTimer);

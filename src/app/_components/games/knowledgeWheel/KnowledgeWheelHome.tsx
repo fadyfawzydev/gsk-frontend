@@ -4,6 +4,8 @@ import QrCodePart from "../../QrCodePart";
 import { useParams } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
 import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
+import { Blob2 } from "../../svgs/Blob2";
+import PlayersViewer from "../../playersViewer/PlayersViewer";
 
 export default function KnowledgeWheelHome() {
   const code: string = "485-439";
@@ -53,6 +55,7 @@ export default function KnowledgeWheelHome() {
             fgColor="#fff"
             nextPage={`/${gameName}/${gameType}/wheel`}
           />
+          <PlayersViewer />
         </div>
       </div>
     </div>

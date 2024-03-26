@@ -27,6 +27,7 @@ const Page = () => {
   const getNext = searchParams.get("getNextQuestion");
   const { checkTokenAndRedirect, gameInfo } = useMyContext();
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+  const [questionTime, setQuestionTime] = useState<number>(0);
   const [getNextQuestion, setGetNextQuestion] = useState(!!getNext);
   const [remainingNumber, setRemainingNumber] = useState(1);
   const [question, setQuestion] = useState<IQuestion>();
@@ -40,6 +41,7 @@ const Page = () => {
       const response = await adminNextQuestion(authToken, getNextQuestion);
       setQuestion(response.data);
       setRemainingNumber(response.data.remaining_questions);
+      setQuestionTime(response.data.question_time);
       setGetNextQuestion(false);
     } catch (error) {
       console.error("Error fetching next question:", error);
@@ -62,6 +64,7 @@ const Page = () => {
   });
 
   const handleNextQuestion = () => {
+    setQuestionTime(0);
     if (remainingNumber === 0) {
       router.push(`/${gameName}/${gameType}/leaderboard`);
     } else {
@@ -105,7 +108,7 @@ const Page = () => {
             correctAnswerId={question?.correct_answer_id || 0}
           />
           <div className="absolute bottom-10 w-full flex justify-between">
-            <CountdownTimer timer={question?.question_time || 0} />
+            <CountdownTimer timer={questionTime} />
             <button
               className="w-[22.55vw] h-[12.04vh]"
               onClick={
