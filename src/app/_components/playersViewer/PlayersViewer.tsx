@@ -26,7 +26,7 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
   const { gameName } = useParams<{
     gameName: string;
   }>();
-  const [players, setPlayers] = useState<string[]>(["Fady", "Marwan"]);
+  const [players, setPlayers] = useState<string[]>([]);
   const [animateNewPlayer, setAnimateNewPlayer] = useState<boolean>(false);
 
   useEffect(() => {
