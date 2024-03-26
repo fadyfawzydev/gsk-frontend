@@ -3,6 +3,7 @@ import QrCodePart from "../../QrCodePart";
 import { useParams } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
 import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
+import PlayersViewer from "../../playersViewer/PlayersViewer";
 
 export default function TreasureHuntHome() {
   const code: string = "485-439";
@@ -52,6 +53,7 @@ export default function TreasureHuntHome() {
             fgColor="#fff"
             nextPage={`/${gameName}/${gameType}/map`}
           />
+          <PlayersViewer />
         </div>
       </div>
     </div>
