@@ -1,12 +1,12 @@
 import React from "react";
 
-interface PlayerProps {
+interface PlayerRowProps {
   playerName: string;
   animate: boolean;
   isEmpty?: boolean;
 }
 
-const Player: React.FC<PlayerProps> = ({
+const PlayerRow: React.FC<PlayerRowProps> = ({
   playerName,
   animate,
   isEmpty = false,
@@ -25,4 +25,4 @@ const Player: React.FC<PlayerProps> = ({
   );
 };
 
-export default Player;
+export default PlayerRow;
