@@ -28,6 +28,8 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
   }>();
   const [players, setPlayers] = useState<string[]>([]);
   const [animateNewPlayer, setAnimateNewPlayer] = useState<boolean>(false);
+  // Added By Marwan to handle the case of the player counter
+  const [playerCounter, setPlayerCounter] = useState(0);
 
   useEffect(() => {
     const pusher = new Pusher(key, {
@@ -46,6 +48,8 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
         const updatedPlayers = [playerName, ...prevPlayers];
         return updatedPlayers.slice(0, 3);
       });
+      // Added By Marwan to handle the case of the player counter
+      setPlayerCounter((prevCounter) => prevCounter + 1);
     });
 
     return () => {
@@ -90,7 +94,9 @@ const PlayersViewer: React.FC<PlayersViewerProps> = ({
           </div>
           <div className="min-w-[10.4vw] absolute left-[8vw] bottom-[1.5vh] flex gap-[1vw] items-center">
             <p className="text-[2.5vw] font-bold text-left text-[#f7ea24]">
-              {!!players.length ? players.length : ""}{" "}
+              {/* {!!players.length ? players.length : ""}{" "} */}
+              {/* Added By Marwan to handle the case of the player counter */}
+              {!!playerCounter ? playerCounter : ""}{" "}
               <span className="text-[1.56vw] font-normal text-left text-white">
                 {!!players.length ? "Player Online !!" : ""}
               </span>
