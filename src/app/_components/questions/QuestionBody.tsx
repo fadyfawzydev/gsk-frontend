@@ -23,11 +23,13 @@ const QuestionBody = ({
       {answers.map((answer, index) => (
         <div
           key={index}
-          style={{ backgroundColor: `${gameInfo?.event_color}` }}
           className={clsx(
-            "h-[10.37vh] p-[1.67vw] bg-amber-500 bg-opacity-60 rounded-[10.42vw] shadow-inner backdrop-blur-[4.35vw] justify-start items-center gap-[1.30vw] flex",
+            "h-[10.37vh] p-[1.67vw] bg-opacity-60 rounded-[10.42vw] shadow-inner backdrop-blur-[4.35vw] justify-start items-center gap-[1.30vw] flex",
             {
-              "bg-amber-500": !gameInfo?.event_color,
+              "bg-[#e21b3c]": !gameInfo?.event_color && index === 0,
+              "bg-[#1368ce]": !gameInfo?.event_color && index === 1,
+              "bg-[#26890c]": !gameInfo?.event_color && index === 2,
+              "bg-[#d89e00]": !gameInfo?.event_color && index === 3,
               "!bg-[#A2B000]":
                 showAnswer && answer.answer_id === correctAnswerId,
               "!bg-[#F72900]":
