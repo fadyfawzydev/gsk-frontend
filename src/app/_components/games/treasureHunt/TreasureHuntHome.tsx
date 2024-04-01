@@ -2,11 +2,10 @@ import Image from "next/image";
 import QrCodePart from "../../QrCodePart";
 import { useParams } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
-import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import PlayersViewer from "../../playersViewer/PlayersViewer";
+import { motion } from "framer-motion";
 
 export default function TreasureHuntHome() {
-  const code: string = "485-439";
   const { gameName, gameType } = useParams<{
     gameName: string;
     gameType: string;
@@ -16,7 +15,13 @@ export default function TreasureHuntHome() {
 
   return (
     <div className="treasureBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
+      {/* Main Part */}
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
+        className="h-screen px-[1.563vw] relative"
+      >
         <div className="flex h-screen w-full justify-between items-center gap-y-[3.15vh] relative">
           <div className="flex w-full top-[2.96vh] gap-[1.5vh] items-start h-[5.93vh] absolute left-0 ">
             <Image
@@ -49,13 +54,12 @@ export default function TreasureHuntHome() {
           </div>
           <QrCodePart
             gameType="treasure-hunt"
-            code={code}
             fgColor="#fff"
             nextPage={`/${gameName}/${gameType}/map`}
           />
           <PlayersViewer />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

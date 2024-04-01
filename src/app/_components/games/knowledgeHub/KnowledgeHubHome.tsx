@@ -4,19 +4,23 @@ import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import { usePathname } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
 import PlayersViewer from "../../playersViewer/PlayersViewer";
+import { motion } from "framer-motion";
 
 export default function KnowledgeHubHome() {
-  const code: string = "485-439";
   const pathname = usePathname();
   const { gameInfo } = useMyContext();
   const eventImgSrc = gameInfo?.event_logo;
 
   return (
     <div className="mainBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
+        className="h-screen px-[1.563vw] relative"
+      >
         <div className="flex h-screen w-full">
           <QrCodePart
-            code={code}
             gameType={KNOWLEDGE_HUB}
             nextPage={`${pathname}/questions?getNextQuestion=true`}
           />
@@ -66,7 +70,7 @@ export default function KnowledgeHubHome() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

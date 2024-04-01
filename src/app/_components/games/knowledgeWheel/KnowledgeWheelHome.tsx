@@ -3,12 +3,10 @@ import Image from "next/image";
 import QrCodePart from "../../QrCodePart";
 import { useParams } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
-import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
-import { Blob2 } from "../../svgs/Blob2";
 import PlayersViewer from "../../playersViewer/PlayersViewer";
+import { motion } from "framer-motion";
 
 export default function KnowledgeWheelHome() {
-  const code: string = "485-439";
   const { gameName, gameType } = useParams<{
     gameName: string;
     gameType: string;
@@ -18,7 +16,12 @@ export default function KnowledgeWheelHome() {
 
   return (
     <div className="wheelBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
+        className="h-screen px-[1.563vw] relative"
+      >
         <div className="flex h-screen w-full justify-between items-center gap-y-[3.15vh] relative">
           <div className="flex w-full top-[2.96vh] gap-[1.5vh] items-start h-[5.93vh] absolute left-0 ">
             <Image
@@ -50,14 +53,13 @@ export default function KnowledgeWheelHome() {
             />
           </div>
           <QrCodePart
-            code={code}
             gameType="knowledge-wheel"
             fgColor="#fff"
             nextPage={`/${gameName}/${gameType}/wheel`}
           />
           <PlayersViewer />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

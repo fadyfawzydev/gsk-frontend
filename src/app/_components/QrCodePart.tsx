@@ -8,13 +8,11 @@ import { KNOWLEDGE_HUB } from "../_constants/gameTypes";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "./providers/ContextProvider";
 interface QrCodePartProps {
-  code: string;
   fgColor?: string;
   gameType: string;
   nextPage: string;
 }
 const QrCodePart = ({
-  code,
   fgColor = "#000",
   gameType = "treasure-hunt",
   nextPage = "/",
@@ -43,8 +41,7 @@ const QrCodePart = ({
 
   const { gameInfo } = useMyContext();
 
-  const { title, icon, color } =
-    gameStyle[gameType as keyof typeof gameStyle] || {};
+  const { color } = gameStyle[gameType as keyof typeof gameStyle] || {};
 
   const pinCodeClass = clsx({
     "text-orange-950": gameType === KNOWLEDGE_HUB,
@@ -78,7 +75,7 @@ const QrCodePart = ({
           <div className="w-[36%] h-auto">
             <ScanToPlay className={scanToPlayClass} fill={color} />
           </div>
-          <div className="w-[26.8vw] mx-auto h-auto mb-5">
+          <div className="w-[23vw] mx-auto h-auto mb-5">
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
