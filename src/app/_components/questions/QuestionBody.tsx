@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import { IAnswer } from "@/app/_types";
 
 interface QuestionBodyProps {
@@ -15,12 +16,10 @@ const QuestionBody = ({
   correctAnswerId,
   showAnswer,
 }: QuestionBodyProps) => {
-  // const { gameInfo } = useMyContext();
-
   return (
     <div className={className}>
       {answers.map((answer, index) => (
-        <div
+        <motion.div
           key={index}
           className={clsx(
             "h-[10.37vh] p-[1.67vw] rounded-[10.42vw] shadow-inner backdrop-blur-[4.35vw] justify-start items-center gap-[1.30vw] flex",
@@ -35,6 +34,23 @@ const QuestionBody = ({
                 showAnswer && answer.answer_id !== correctAnswerId,
             }
           )}
+          initial={{ opacity: 0, y: 10 }} // Initial opacity and y-offset
+          animate={{
+            opacity: 1,
+            y: 0,
+            x:
+              showAnswer && answer.answer_id === correctAnswerId
+                ? [-5, 5, -5, 5, 0]
+                : 0,
+            scale:
+              showAnswer && answer.answer_id === correctAnswerId
+                ? [1, 1.05, 1, 1.05, 1]
+                : 1,
+          }} // Animate to full opacity and original position
+          transition={{
+            duration: 0.5, // Adjust the duration to make the animation quicker
+            delay: showAnswer ? 0 : 0.75 + index * 0.4, // Conditional delay based on showAnswer
+          }}
         >
           <div className="w-[2.50vw] h-[4.44vh] shirnk-0 bg-white rounded-full grid place-items-center">
             <h6 className="text-center text-[1.25vw] font-bold text-slate-600">
@@ -44,7 +60,7 @@ const QuestionBody = ({
           <div className="text-center text-white text-[1.042vw] font-semibold">
             {answer.answer_title}
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

@@ -38,7 +38,7 @@ const QuestionHeader = ({ question, gameType }: QuestionHeaderProps) => {
       ></div>
       <div
         style={{ backgroundColor: `${gameInfo?.event_color}` }}
-        className={`z-[2] ${bgColor} shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center h-full`}
+        className={`z-[2] ${bgColor} shadow-lg backdrop-blur-[30px] rounded-[6vw] relative flex justify-center items-center min-h-[40vh] max-h-[50vh]`}
       >
         <h5 className="text-white text-[2.71vw] font-bold text-center flex flex-col items-center gap-y-[0.75vh] px-[3vw] py-[2.5vh] text-ellipsis">
           {question}

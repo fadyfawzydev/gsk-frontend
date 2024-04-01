@@ -15,6 +15,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CountdownTimer from "@/app/_components/countdownTimer/CountdownTimer";
+import { motion } from "framer-motion";
 
 const Page = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Page = () => {
   const [getNextQuestion, setGetNextQuestion] = useState(!!getNext);
   const [remainingNumber, setRemainingNumber] = useState(1);
   const [question, setQuestion] = useState<IQuestion>();
+  const [loading, setLoading] = useState(true);
   const eventImgSrc = gameInfo?.event_logo;
 
   const fetchNextQuestion = useCallback(async () => {
@@ -45,8 +47,10 @@ const Page = () => {
       setGetNextQuestion(false);
     } catch (error) {
       console.error("Error fetching next question:", error);
+    } finally {
+      setLoading(false); // Set loading state to false when done fetching
     }
-  }, [remainingNumber, gameInfo?._token, getNextQuestion]);
+  }, [gameInfo, getNextQuestion, remainingNumber]);
 
   useEffect(() => {
     checkTokenAndRedirect();
@@ -65,6 +69,7 @@ const Page = () => {
 
   const handleNextQuestion = () => {
     setQuestionTime(0);
+    setLoading(true);
     if (remainingNumber === 0) {
       router.push(`/${gameName}/${gameType}/leaderboard`);
     } else {
@@ -77,7 +82,7 @@ const Page = () => {
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
-        <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 px-[1.563vw]  ">
+        <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 px-[1.563vw]">
           {eventImgSrc ? (
             <Image
               src={eventImgSrc}
@@ -97,42 +102,58 @@ const Page = () => {
             alt="Gsk"
           />
         </div>
-        <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
-          <QuestionHeader
-            question={question?.question_title || ""}
-            gameType={gameType}
-          />
-          <QuestionBody
-            answers={question?.answers || []}
-            showAnswer={showCorrectAnswer}
-            correctAnswerId={question?.correct_answer_id || 0}
-          />
-          <div className="absolute bottom-10 w-full flex justify-between">
-            <CountdownTimer timer={questionTime} />
-            <button
-              className="w-[22.55vw] h-[12.04vh]"
-              onClick={
-                showCorrectAnswer
-                  ? handleNextQuestion
-                  : () => setShowCorrectAnswer(true)
-              }
+        {!loading ? (
+          <div className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative">
+            <motion.div
+              initial={{ opacity: 0, x: -100 }} // Initial position of QuestionHeader
+              animate={{ opacity: 1, x: 0 }} // Animate QuestionHeader to move from left
+              transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
             >
-              <Image
-                src={`/shapes/${
-                  showCorrectAnswer
-                    ? remainingNumber === 0
-                      ? "leaderboard.svg"
-                      : "nextQuestion.svg"
-                    : "showAnswer.svg"
-                }`}
-                width={890}
-                height={579}
-                className="h-auto w-full object-contain"
-                alt=""
+              <QuestionHeader
+                question={question?.question_title || ""}
+                gameType={gameType}
               />
-            </button>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 100 }} // Initial position of QuestionBody
+              animate={{ opacity: 1, x: 0 }} // Animate QuestionBody to move from right
+              transition={{
+                delay: 0.65,
+              }}
+            >
+              <QuestionBody
+                answers={question?.answers || []}
+                showAnswer={showCorrectAnswer}
+                correctAnswerId={question?.correct_answer_id || 0}
+              />
+            </motion.div>
+            <div className="absolute bottom-10 w-full flex justify-between">
+              <CountdownTimer timer={questionTime} />
+              <button
+                className="w-[22.55vw] h-[12.04vh]"
+                onClick={
+                  showCorrectAnswer
+                    ? handleNextQuestion
+                    : () => setShowCorrectAnswer(true)
+                }
+              >
+                <Image
+                  src={`/shapes/${
+                    showCorrectAnswer
+                      ? remainingNumber === 0
+                        ? "leaderboard.svg"
+                        : "nextQuestion.svg"
+                      : "showAnswer.svg"
+                  }`}
+                  width={890}
+                  height={579}
+                  className="h-auto w-full object-contain"
+                  alt=""
+                />
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );
