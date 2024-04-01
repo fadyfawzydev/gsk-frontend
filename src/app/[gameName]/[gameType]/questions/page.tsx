@@ -69,6 +69,7 @@ const Page = () => {
 
   const handleNextQuestion = () => {
     setQuestionTime(0);
+    setQuestion({} as IQuestion);
     setLoading(true);
     if (remainingNumber === 0) {
       router.push(`/${gameName}/${gameType}/leaderboard`);

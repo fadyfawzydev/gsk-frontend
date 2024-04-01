@@ -4,22 +4,7 @@ import { useMyContext } from "../_components/providers/ContextProvider";
 import { useRouter } from "next/navigation";
 import { adminStartPlay } from "../_services/api";
 import Image from "next/image";
-
-interface ToasterProps {
-  message: string;
-  visible: boolean;
-}
-const Toaster: React.FC<ToasterProps> = ({ message, visible }) => {
-  return (
-    <div
-      className={`${
-        visible ? "block" : "hidden"
-      } fixed bottom-[10vh] w-[20vw] text-white left-1/2 transform -translate-x-1/2 bg-red-500/80 text-center text-[1vw] p-4 rounded shadow-lg z-50`}
-    >
-      <p>{message}</p>
-    </div>
-  );
-};
+import Toaster from "../_components/toaster/Toaster";
 
 export default function LoginPage({
   params,
@@ -29,7 +14,6 @@ export default function LoginPage({
   const { gameName } = params;
   const { updateGameInfo } = useMyContext();
   const router = useRouter();
-
 
   const [toasterMessage, setToasterMessage] = useState("");
   const [isToasterVisible, setIsToasterVisible] = useState(false);
@@ -42,7 +26,7 @@ export default function LoginPage({
       }, 4000);
     }
     return () => clearTimeout(timeoutId);
-  }, [ isToasterVisible]);
+  }, [isToasterVisible]);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();

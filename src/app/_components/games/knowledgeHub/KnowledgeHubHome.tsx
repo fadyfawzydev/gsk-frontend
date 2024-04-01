@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
 import PlayersViewer from "../../playersViewer/PlayersViewer";
 import { motion } from "framer-motion";
+import ApprovalCode from "../../approvalCode/ApprovalCode";
 
 export default function KnowledgeHubHome() {
   const pathname = usePathname();
@@ -69,6 +70,7 @@ export default function KnowledgeHubHome() {
               <PlayersViewer className="" diaglogRight />
             </div>
           </div>
+          <ApprovalCode />
         </div>
       </motion.div>
     </div>

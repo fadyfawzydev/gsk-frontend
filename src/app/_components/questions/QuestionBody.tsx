@@ -48,7 +48,7 @@ const QuestionBody = ({
                 : 1,
           }} // Animate to full opacity and original position
           transition={{
-            duration: 0.5, // Adjust the duration to make the animation quicker
+            duration: 1, // Adjust the duration to make the animation quicker
             delay: showAnswer ? 0 : 0.75 + index * 0.4, // Conditional delay based on showAnswer
           }}
         >

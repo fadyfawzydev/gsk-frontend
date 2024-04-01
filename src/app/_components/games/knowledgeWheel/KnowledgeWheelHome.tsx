@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useMyContext } from "../../providers/ContextProvider";
 import PlayersViewer from "../../playersViewer/PlayersViewer";
 import { motion } from "framer-motion";
+import ApprovalCode from "../../approvalCode/ApprovalCode";
 
 export default function KnowledgeWheelHome() {
   const { gameName, gameType } = useParams<{
@@ -59,6 +60,7 @@ export default function KnowledgeWheelHome() {
           />
           <PlayersViewer />
         </div>
+        <ApprovalCode isRight={false} className="text-white" />
       </motion.div>
     </div>
   );

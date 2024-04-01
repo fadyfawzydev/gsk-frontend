@@ -1,4 +1,9 @@
 "use client";
+import {
+  KNOWLEDGE_HUB,
+  KNOWLEDGE_WHEEL,
+  TREASURE_HUNT,
+} from "@/app/_constants/gameTypes";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, {
@@ -45,9 +50,8 @@ type ContextProviderProps = {
 export const ContextProvider = ({ children }: ContextProviderProps) => {
   const router = useRouter();
   const [gameInfo, setGameInfo] = useState<GameInfo | null>(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
-  // Check if gameInfo exists in session storage on component mount
   useEffect(() => {
     const storedGameInfo = sessionStorage.getItem("gameInfo");
     if (storedGameInfo !== null) {
@@ -58,12 +62,12 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
         console.error("Error parsing stored gameInfo:", error);
       }
     }
-    setLoading(false); // Mark loading as false after mounting
+    setLoading(false);
   }, []);
 
   const updateGameInfo = (newGameInfo: GameInfo) => {
     setGameInfo(newGameInfo);
-    sessionStorage.setItem("gameInfo", JSON?.stringify(newGameInfo));
+    sessionStorage.setItem("gameInfo", JSON.stringify(newGameInfo));
   };
 
   const checkTokenAndRedirect = () => {
@@ -73,8 +77,27 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
     }
   };
 
+  useEffect(() => {
+    if (!loading && gameInfo && gameInfo.game_type_slug) {
+      const audio = new Audio();
+      if (gameInfo.game_type_slug === KNOWLEDGE_HUB) {
+        audio.src = "/sounds/game_sound1.mp3";
+      } else if (gameInfo.game_type_slug === KNOWLEDGE_WHEEL) {
+        audio.src = "/sounds/game_sound2.mp3";
+      } else if (gameInfo.game_type_slug === TREASURE_HUNT) {
+        audio.src = "/sounds/game_sound3.mp3";
+      }
+      audio.loop = true;
+      audio.play();
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+      };
+    }
+  }, [loading, gameInfo]);
+
   if (loading) {
-    return null; // Render a loading indicator
+    return null;
   }
 
   return (
