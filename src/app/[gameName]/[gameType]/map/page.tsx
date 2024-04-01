@@ -1,10 +1,10 @@
 "use client";
 
 import { useMyContext } from "@/app/_components/providers/ContextProvider";
-import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface MapProps {}
 const Map = () => {
@@ -26,7 +26,12 @@ const Map = () => {
   };
   return (
     <div className="mapBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
+        className="h-screen px-[1.563vw] relative"
+      >
         <div
           className="flex h-screen w-full flex-col justify-center items-center gap-y-[3.15vh] relative cursor-pointer"
           onClick={goToQuestions}
@@ -52,7 +57,7 @@ const Map = () => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

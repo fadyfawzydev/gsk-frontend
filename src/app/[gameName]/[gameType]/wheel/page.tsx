@@ -5,6 +5,7 @@ import { KNOWLEDGE_HUB } from "@/app/_constants/gameTypes";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface WheelProps {}
 const Wheel = () => {
@@ -48,7 +49,12 @@ const Wheel = () => {
 
   return (
     <div className="wheelBg w-full h-screen overflow-hidden">
-      <div className="h-screen px-[1.563vw] relative">
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 120, duration: 1.5 }}
+        className="h-screen px-[1.563vw] relative"
+      >
         <div className="flex h-screen w-full justify-between items-center gap-y-[3.15vh] relative">
           <div className="flex w-full top-[2.96vh] justify-between gap-[1.5vh] items-start h-[5.93vh] absolute left-0 ">
             {eventImgSrc ? (
@@ -156,7 +162,7 @@ const Wheel = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

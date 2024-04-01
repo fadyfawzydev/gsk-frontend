@@ -12,6 +12,8 @@ import { useParams } from "next/navigation";
 import CountUp from "react-countup";
 import { useCallback, useEffect, useState } from "react";
 import { adminWinnersList } from "@/app/_services/api";
+import { motion } from "framer-motion";
+
 export interface Winner {
   winner_name: string;
   winner_score: number;
@@ -22,11 +24,10 @@ const Leaderboard = () => {
   const { gameType } = useParams<{ gameType: string }>();
   const { checkTokenAndRedirect, gameInfo } = useMyContext();
 
-  const fetchNextQuestion = useCallback(async () => {
+  const fetchWinnersLeaderboard = useCallback(async () => {
     try {
       const authToken = gameInfo?._token || "";
       const response = await adminWinnersList(authToken);
-      console.log("response", response);
       setWinners(response.data);
     } catch (error) {
       console.error("Error fetching next question:", error);
@@ -38,8 +39,8 @@ const Leaderboard = () => {
   }, [checkTokenAndRedirect]);
 
   useEffect(() => {
-    fetchNextQuestion();
-  }, [fetchNextQuestion]);
+    fetchWinnersLeaderboard();
+  }, [fetchWinnersLeaderboard]);
 
   useEffect(() => {
     checkTokenAndRedirect();
@@ -74,6 +75,10 @@ const Leaderboard = () => {
 
   const eventImgSrc = gameInfo?.event_logo;
 
+  if (!winners) {
+    // Render loading state or placeholder
+    return null;
+  }
   return (
     <div className={mainBgStyle}>
       <div className="h-screen px-[1.563vw] relative">
@@ -102,7 +107,13 @@ const Leaderboard = () => {
               alt="Gsk"
             />
           </div>
-          <div className="relative w-[46.35vw] h-auto">
+          {/* First Part */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }} // Adjust delay as needed
+            className="relative w-[46.35vw] h-auto"
+          >
             <div className="flex flex-col w-full gap-y-[3.15vh]">
               <div className="flex w-full">
                 {topThreeWinners &&
@@ -159,8 +170,15 @@ const Leaderboard = () => {
                   ))}
               </div>
             </div>
-          </div>
-          <div className="relative w-[62.4vw] h-auto">
+          </motion.div>
+
+          {/* Second Part */}
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }} // Adjust delay as needed
+            className="relative w-[62.4vw] h-auto"
+          >
             <div className="grid grid-cols-2 w-full gap-y-[3.15vh] gap-x-[1.67vw]">
               {remainingWinners &&
                 remainingWinners.map((winner, index) => (
@@ -187,7 +205,7 @@ const Leaderboard = () => {
                   </div>
                 ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
