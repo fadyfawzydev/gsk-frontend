@@ -44,3 +44,14 @@ export async function adminWinnersList(authToken: string) {
   const url = `${BASE_URL}/Admin/Winnerslist`;
   return postData(url, new FormData(), authToken);
 }
+
+// Show Answer Triggers to backend
+export async function showAnswerEventTrigger(
+  gameSlug: string,
+  authToken: string
+) {
+  const formData = new FormData();
+  formData.append("game_slug", gameSlug);
+  const url = `${BASE_URL}/Admin/ShowAnswer`;
+  return postData(url, formData, authToken);
+}

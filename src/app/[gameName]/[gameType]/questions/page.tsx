@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CountdownTimer from "@/app/_components/countdownTimer/CountdownTimer";
 import { motion } from "framer-motion";
+import { showAnswerEventTrigger } from "@/app/_services/apiFetch";
 
 const Page = () => {
   const router = useRouter();
@@ -29,11 +30,18 @@ const Page = () => {
   const { checkTokenAndRedirect, gameInfo } = useMyContext();
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
   const [questionTime, setQuestionTime] = useState<number>(0);
-  const [getNextQuestion, setGetNextQuestion] = useState(!!getNext);
+  const [getNextQuestion, setGetNextQuestion] = useState(false);
   const [remainingNumber, setRemainingNumber] = useState(1);
   const [question, setQuestion] = useState<IQuestion>();
   const [loading, setLoading] = useState(true);
   const eventImgSrc = gameInfo?.event_logo;
+
+  useEffect(() => {
+    const getNextParam = searchParams.get("getNextQuestion");
+    if (getNextParam) {
+      setGetNextQuestion(true);
+    }
+  }, [searchParams]);
 
   const fetchNextQuestion = useCallback(async () => {
     if (remainingNumber === 0) return;
@@ -56,9 +64,13 @@ const Page = () => {
     checkTokenAndRedirect();
   }, [checkTokenAndRedirect]);
 
+  // In the useEffect where you're fetching the next question
   useEffect(() => {
-    fetchNextQuestion();
-  }, [fetchNextQuestion]);
+    if (getNextQuestion) {
+      // Only fetch if getNextQuestion is true
+      fetchNextQuestion();
+    }
+  }, [getNextQuestion]);
 
   const mainBgStyle = clsx({
     "secBg ": gameType === KNOWLEDGE_HUB,
@@ -79,6 +91,23 @@ const Page = () => {
       fetchNextQuestion();
     }
   };
+
+  useEffect(() => {
+    const handleShowAnswerEventTrigger = async () => {
+      try {
+        const response = await showAnswerEventTrigger(
+          gameName,
+          gameInfo?._token || ""
+        );
+      } catch (error) {
+        console.error("Error triggering show answer event:", error);
+      }
+    };
+
+    if (showCorrectAnswer) {
+      handleShowAnswerEventTrigger();
+    }
+  }, [gameInfo, gameName, showCorrectAnswer]);
 
   return (
     <div className={mainBgStyle}>
