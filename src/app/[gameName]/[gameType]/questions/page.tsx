@@ -16,9 +16,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CountdownTimer from "@/app/_components/countdownTimer/CountdownTimer";
 import { motion } from "framer-motion";
+import { appId, key, secret, cluster } from "@/app/_constants/pusherVars";
+import Pusher from "pusher-js";
 
 const Page = () => {
   const router = useRouter();
+  const Pusher = require("pusher");
 
   const { gameName, gameType } = useParams<{
     gameName: string;
@@ -34,6 +37,18 @@ const Page = () => {
   const [question, setQuestion] = useState<IQuestion>();
   const [loading, setLoading] = useState(true);
   const eventImgSrc = gameInfo?.event_logo;
+
+  const triggerPusherEvent = (eventName: any, eventData: any) => {
+    const pusher = new Pusher({
+      appId: "1774611",
+      key: "82d3e38e58d869ca1ac0",
+      secret: "aa86ab1c867c336348e9",
+      cluster: "eu",
+      useTLS: true,
+    });
+
+    pusher.trigger(`gsk-admin-${gameName}`, eventName, eventData);
+  };
 
   const fetchNextQuestion = useCallback(async () => {
     if (remainingNumber === 0) return;
@@ -135,7 +150,12 @@ const Page = () => {
                 onClick={
                   showCorrectAnswer
                     ? handleNextQuestion
-                    : () => setShowCorrectAnswer(true)
+                    : () => {
+                        setShowCorrectAnswer(true);
+                        triggerPusherEvent("admin-showanswer", {
+                          message: { show_answer: true },
+                        });
+                      }
                 }
               >
                 <Image

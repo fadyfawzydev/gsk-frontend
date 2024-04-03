@@ -4,11 +4,7 @@ import Pusher from "pusher-js";
 import Image from "next/image";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
-
-const appId = "1775161";
-const key = "eecd5438a7c0310079d6";
-const secret = "6403194108070b5539a8";
-const cluster = "us2";
+import { cluster, key } from "@/app/_constants/pusherVars";
 
 interface PlayerData {
   player_name: string;
