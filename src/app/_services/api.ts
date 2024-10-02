@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from "axios";
 
 // Define constants
-const BASE_URL = "https://game.invent.solutions/public/api/v1";
+const BASE_URL = "https://gskknowledgeleague.com/public/api/v1";
 
 // Function to handle POST requests with formdata
 async function postData(

@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Toaster from "../toaster/Toaster";
+import { useParams, useRouter } from "next/navigation";
 
 interface ApprovalCodeProps {
   isRight?: boolean;
   className?: string;
 }
 const ApprovalCode = ({ isRight = true, className }: ApprovalCodeProps) => {
+
+  const router = useRouter();
+  const { gameName, gameType } = useParams<{
+    gameName: string;
+    gameType: string;
+  }>();
+  const goToDisclaimerPage = () => {
+    router.push(`/${gameName}/${gameType}/disclaimer`);
+  };
+
   const msg = `For more information, please refer to the prescribing information or contact GSK: P.O Box 55850, Jeddah, 21544, Kingdom of Saudi Arabia. Telephone: +966 12 653 6666 or via gcc.medinfo@gsk.com
 
     To report Adverse Event/s associated with the use of GSK product/s, please contact us via saudi.safety@gsk.com
@@ -41,8 +52,18 @@ const ApprovalCode = ({ isRight = true, className }: ApprovalCodeProps) => {
         additionalCss={"w-[30vw]"}
       />
 
-      <div className={`${className} text-[0.75vw]`}>
+      {/* <div className={`${className} text-[0.75vw]`}>
         <button onClick={changeTosaterState}>Disclaimer</button> <br />{" "}
+        <span>A019-109-10</span>
+      </div> */}
+
+      <div className={`${className} text-[0.75vw]`}>
+        <button onClick={() => {
+          goToDisclaimerPage();
+        }}>
+          Disclaimer
+        </button> 
+        <br />{" "}
         <span>A019-109-10</span>
       </div>
     </div>
